@@ -1,0 +1,294 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Silk.NET" Version="2.14.0" />
+      <PackageReference Include="Silk.NET.GLFW" Version="2.14.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Shaders\f_default.bin">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Shaders\v_default.bin">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Libs\bgfx\External\macOS\arm64\libbgfx-Debug.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Libs\bgfx\External\macOS\arm64\libbgfx-Release.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Libs\bgfx\External\macOS\x64\libbgfx-Debug.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Libs\bgfx\External\macOS\x64\libbgfx-Release.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbgfx-Debug.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbgfx-Release.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbgfx-Debug.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbgfx-Release.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbgfx-shared-libDebug.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbgfx-shared-libRelease.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbgfxDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbgfxRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbimg_decodeDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbimg_decodeRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbimg_encodeDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbimg_encodeRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbimgDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbimgRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbxDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libbxRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libexample-commonDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libexample-commonRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libexample-glueDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libexample-glueRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libfcppDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libfcppRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libglsl-optimizerDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libglsl-optimizerRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libglslangDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libglslangRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libspirv-crossDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libspirv-crossRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libspirv-optDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\libspirv-optRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\universal\libbgfx-shared-libDebug.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\universal\libbgfxDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\universal\libexample-commonDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\universal\libexample-glueDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\geometrycDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\geometrycRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\geometryvDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\geometryvRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\shadercDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\shadercRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\texturecDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\texturecRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\texturevDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\texturevRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\geometrycDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\geometrycRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\geometryvDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\geometryvRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbgfx-shared-libDebug.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbgfx-shared-libRelease.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbgfxDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbgfxRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbimg_decodeDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbimg_decodeRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbimg_encodeDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbimg_encodeRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbimgDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbimgRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbxDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libbxRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libexample-commonDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libexample-commonRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libexample-glueDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libexample-glueRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libfcppDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libfcppRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libglsl-optimizerDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libglsl-optimizerRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libglslangDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libglslangRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libspirv-crossDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libspirv-crossRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libspirv-optDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\libspirv-optRelease.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\shadercDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\shadercRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\texturecDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\texturecRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\texturevDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\x64\texturevRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\example-17-drawstress.app\Contents\MacOS\example-17-drawstressDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\example-17-drawstress.app\Contents\MacOS\example-17-drawstressRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\example-25-c99.app\Contents\MacOS\example-25-c99Debug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\example-25-c99.app\Contents\MacOS\example-25-c99Release">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\examples.app\Contents\MacOS\examplesDebug">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="lib\bgfx\External\macOS\arm64\examples.app\Contents\MacOS\examplesRelease">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+</Project>
