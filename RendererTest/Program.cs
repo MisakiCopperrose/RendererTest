@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Bgfx;
+using RendererTest.lib.BGFX;
 using Silk.NET.Core.Contexts;
 using Silk.NET.GLFW;
 
@@ -17,7 +18,7 @@ internal static unsafe class Program
 
         if (!Glfw.Init()) throw new GlfwException("GLFW INITIALIZATION FAILED!");
 
-        Glfw.WindowHint(WindowHintClientApi.ClientApi, ClientApi.NoApi);
+        Glfw.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGL);
 
         _windowHandle = Glfw.CreateWindow(800, 600, "BGFX Test Window", null, null);
 
@@ -90,7 +91,7 @@ internal static unsafe class Program
         };
     }
 
-    public static void* GlfwNativeWindowHandle(WindowHandle* windowHandle, out void* display)
+    private static void* GlfwNativeWindowHandle(WindowHandle* windowHandle, out void* display)
     {
         var nativeWindow = new GlfwNativeWindow(Glfw, windowHandle);
 
@@ -110,7 +111,8 @@ internal static unsafe class Program
             case NativeWindowFlags.DirectFB:
                 break;
             case NativeWindowFlags.Cocoa:
-                window = (void*) nativeWindow.Cocoa!.Value;
+                //window = (void*) nativeWindow.Cocoa!.Value;
+                window = MetalWindowTest.SetupMetalLayer((void*)nativeWindow.Cocoa!.Value);
                 break;
             case NativeWindowFlags.UIKit:
                 break;
@@ -142,7 +144,7 @@ internal static unsafe class Program
         return window;
     }
 
-    public static void GlfwDestroyWindow(WindowHandle* windowHandle)
+    private static void GlfwDestroyWindow(WindowHandle* windowHandle)
     {
         if (windowHandle == null)
             return;

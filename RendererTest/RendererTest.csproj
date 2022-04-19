@@ -308,9 +308,17 @@
         <None Update="lib\BGFX\external\Windows\x64\bgfx-shared-libDebug.dll">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
+        <None Update="lib\BGFX\external\macOS\libbgfx-shared-libDebug.dylib">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="lib\BGFX\external\macOS\libMetalWindowTest.dylib">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="lib\BGFX\external\macOS\arm64" />
+        <Folder Include="lib\BGFX\external\macOS\x64" />
         <Folder Include="lib\BGFX\external\Windows\x86" />
         <Folder Include="lib\GLFW\Windows" />
     </ItemGroup>
