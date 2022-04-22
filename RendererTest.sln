@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RendererTest", "RendererTest\RendererTest.csproj", "{621FE889-A117-4ED3-B4CE-C030161523CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiThreadedRendererTest", "MultiThreadedRendererTest\MultiThreadedRendererTest.csproj", "{C716BCE8-2B2B-4EA6-B440-83F69541ABF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RendererLibraries", "RendererLibraries\RendererLibraries.csproj", "{CC89CE7E-34F9-4AEE-BF18-CA951054B95B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{621FE889-A117-4ED3-B4CE-C030161523CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{621FE889-A117-4ED3-B4CE-C030161523CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{621FE889-A117-4ED3-B4CE-C030161523CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C716BCE8-2B2B-4EA6-B440-83F69541ABF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C716BCE8-2B2B-4EA6-B440-83F69541ABF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C716BCE8-2B2B-4EA6-B440-83F69541ABF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C716BCE8-2B2B-4EA6-B440-83F69541ABF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC89CE7E-34F9-4AEE-BF18-CA951054B95B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC89CE7E-34F9-4AEE-BF18-CA951054B95B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC89CE7E-34F9-4AEE-BF18-CA951054B95B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC89CE7E-34F9-4AEE-BF18-CA951054B95B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

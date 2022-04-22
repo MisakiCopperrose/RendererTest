@@ -1,6 +1,5 @@
 using System.Diagnostics;
-using Bgfx;
-using RendererTest.lib.BGFX;
+using RendererLibraries.BGFX;
 using Silk.NET.Core.Contexts;
 using Silk.NET.GLFW;
 
@@ -18,7 +17,7 @@ internal static unsafe class Program
 
         if (!Glfw.Init()) throw new GlfwException("GLFW INITIALIZATION FAILED!");
 
-        Glfw.WindowHint(WindowHintClientApi.ClientApi, ClientApi.OpenGL);
+        Glfw.WindowHint(WindowHintClientApi.ClientApi, ClientApi.NoApi);
 
         _windowHandle = Glfw.CreateWindow(800, 600, "BGFX Test Window", null, null);
 
@@ -112,7 +111,7 @@ internal static unsafe class Program
                 break;
             case NativeWindowFlags.Cocoa:
                 //window = (void*) nativeWindow.Cocoa!.Value;
-                window = MetalWindowTest.SetupMetalLayer((void*)nativeWindow.Cocoa!.Value);
+                window = MetalWindowTest.SetupMetalLayer((void*) nativeWindow.Cocoa!.Value);
                 break;
             case NativeWindowFlags.UIKit:
                 break;
@@ -138,7 +137,7 @@ internal static unsafe class Program
                 throw new ArgumentOutOfRangeException();
         }
 
-        if (window == default) 
+        if (window == default)
             throw new GlfwException("Could not get window handle pointer!");
 
         return window;

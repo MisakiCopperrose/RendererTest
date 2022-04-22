@@ -317,9 +317,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="lib\BGFX\external\macOS\arm64" />
-        <Folder Include="lib\BGFX\external\macOS\x64" />
-        <Folder Include="lib\BGFX\external\Windows\x86" />
-        <Folder Include="lib\GLFW\Windows" />
+      <ProjectReference Include="..\RendererLibraries\RendererLibraries.csproj" />
     </ItemGroup>
 </Project>

@@ -494,4 +494,5 @@ FodyWeavers.xsd
 *.sln.iml
 
 # Don't ignore anything from the libraries folder
-!RendererTest/lib/**/**/**/*
+!RendererLibraries/BGFX/**/**/**/*
+!RendererLibraries/GLFW/**/**/**/*
