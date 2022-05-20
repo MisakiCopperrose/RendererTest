@@ -2,10 +2,12 @@ using System.Runtime.InteropServices;
 
 namespace RendererLibraries.BGFX;
 
-public static class MetalWindowTest
+public static unsafe class MetalWindowTest
 {
-    private const string DllName = "\\BGFX\\external\\macOS\\libMetalWindowTest.dylib";
+    private const string DllName = "\\BGFX\\external\\macOS\\libmetal-layer-glfw.dylib";
 
     [DllImport(DllName, EntryPoint = "cbSetupMetalLayer", CallingConvention = CallingConvention.Cdecl)]
-    public static extern unsafe void* SetupMetalLayer(void* window);
+    private static extern void* cbSetupMetalLayer(nint window);
+
+    public static void* SetupMetalLayer(nint window) => cbSetupMetalLayer(window);
 }

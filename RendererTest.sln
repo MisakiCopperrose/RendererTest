@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiThreadedRendererTest",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RendererLibraries", "RendererLibraries\RendererLibraries.csproj", "{CC89CE7E-34F9-4AEE-BF18-CA951054B95B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RendererAbstractionTest", "RendererAbstractionTest\RendererAbstractionTest.csproj", "{4001BF76-BE77-4352-B603-D6B0741F493A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{CC89CE7E-34F9-4AEE-BF18-CA951054B95B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC89CE7E-34F9-4AEE-BF18-CA951054B95B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC89CE7E-34F9-4AEE-BF18-CA951054B95B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4001BF76-BE77-4352-B603-D6B0741F493A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4001BF76-BE77-4352-B603-D6B0741F493A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4001BF76-BE77-4352-B603-D6B0741F493A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4001BF76-BE77-4352-B603-D6B0741F493A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

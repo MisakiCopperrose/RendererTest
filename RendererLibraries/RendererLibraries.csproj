@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,9 +15,16 @@
       <None Update="BGFX\external\macOS\arm64\libbgfx-shared-libDebug.dylib">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="BGFX\external\macOS\libMetalWindowTest.dylib">
+      <None Update="BGFX\external\macOS\libmetal window layer.dylib">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="BGFX\external\macOS\libmetal-layer-glfw.dylib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="StbImageSharp" Version="2.27.8" />
     </ItemGroup>
 
 </Project>

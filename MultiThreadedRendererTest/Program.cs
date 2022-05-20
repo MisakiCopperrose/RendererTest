@@ -89,20 +89,29 @@ internal static unsafe class Program
         public uint Height { get; set; }
     }
 
-    private static void RunApiThread(object? apiThreadArgs)
+    private static void RunApiThread(ApiThreadArgs userData)
     {
-        if (apiThreadArgs is not ApiThreadArgs userData)
-            throw new Exception("ARGUMENT NOT OF TYPE API_THREAD_ARGS");
-        
         var init = new bgfx.Init
         {
+            limits = default,
+            type = bgfx.RendererType.Count,
+            vendorId = default,
+            deviceId = default,
+            capabilities = default,
+            debug = default,
+            profile = default,
             platformData = userData.PlatformData,
             resolution = new bgfx.Resolution
             {
+                format = bgfx.TextureFormat.BC1,
                 width = userData.Width,
                 height = userData.Height,
-                reset = (uint) bgfx.ResetFlags.Vsync
-            }
+                reset = (uint)bgfx.ResetFlags.Vsync,
+                numBackBuffers = default,
+                maxFrameLatency = default
+            },
+            callback = default,
+            allocator = default,
         };
 
         if (!bgfx.init(&init))
@@ -201,9 +210,9 @@ internal static unsafe class Program
         var width = Width;
         var height = Height;
 
-        var apiThread = new Thread(RunApiThread);
+        var apiThread = new Task(() => RunApiThread(apiThreadArgs));
         
-        apiThread.Start(apiThreadArgs);
+        apiThread.Start();
 
         var exit = false;
 
@@ -242,7 +251,7 @@ internal static unsafe class Program
             
         }
         
-        apiThread.Interrupt();
+        apiThread.Dispose();
         
         Glfw.Terminate();
     }
@@ -282,7 +291,7 @@ internal static unsafe class Program
                 break;
             case NativeWindowFlags.Cocoa:
                 //window = (void*) nativeWindow.Cocoa!.Value;
-                window = MetalWindowTest.SetupMetalLayer((void*) nativeWindow.Cocoa!.Value);
+                window = MetalWindowTest.SetupMetalLayer(nativeWindow.Cocoa!.Value);
                 break;
             case NativeWindowFlags.UIKit:
                 break;
