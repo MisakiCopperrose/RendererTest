@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Silk.NET.GLFW" Version="2.14.0" />
+      <PackageReference Include="Silk.NET.GLFW" Version="2.15.0" />
       <PackageReference Include="StbImageSharp" Version="2.27.8" />
     </ItemGroup>
 

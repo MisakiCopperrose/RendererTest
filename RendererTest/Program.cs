@@ -166,11 +166,12 @@ internal static unsafe class Program
             var refCubeTriList =
                 bgfx.make_ref(pCubeTriList, (uint)(sizeof(int) * CubeTriList.Length));
 
-            ibh = bgfx.create_index_buffer(refCubeTriList, (ushort)bgfx.BufferFlags.None);
+            ibh = bgfx.create_index_buffer(refCubeTriList, (ushort)bgfx.BufferFlags.Index32);
         }
 
         var vsh = LoadShader("vs_cubes");
         var fsh = LoadShader("fs_cubes");
+        
         var program = bgfx.create_program(vsh, fsh, true);
 
         while (!Glfw.WindowShouldClose(_windowHandle))

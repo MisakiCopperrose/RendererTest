@@ -1,23 +1,19 @@
-using RendererAbstractionTest.Renderer.Types.Textures;
 using RendererLibraries.BGFX;
 
 namespace RendererAbstractionTest.Renderer.Types.Buffers;
 
-public class Framebuffer : IDisposable, IBuffer
+public class Framebuffer : IBuffer
 {
-    private bgfx.FrameBufferHandle _frameBufferHandle;
-    private bgfx.Attachment _textureAttachment;
+    private readonly bgfx.FrameBufferHandle _frameBufferHandle;
     private string _name;
 
-    public Framebuffer(ushort width, ushort height)
+    public Framebuffer(ushort width, ushort height, string name = "")
     {
-        //_frameBufferHandle = bgfx.create_frame_buffer(width, height, bgfx.TextureFormat.Count);
-    }
+        _frameBufferHandle = bgfx.create_frame_buffer(width, height, bgfx.TextureFormat.Count, 0);
+        
+        bgfx.set_frame_buffer_name(_frameBufferHandle, name, name.Length);
 
-    public ITexture Texture
-    {
-        get; // bgfx_get_texture
-        set;
+        _name = name;
     }
 
     public string Name

@@ -1,112 +1,146 @@
 using RendererLibraries.BGFX;
-using StbImageSharp;
 
 namespace RendererAbstractionTest.Renderer.Types.Textures;
 
 public unsafe class Texture2D : ITexture
 {
-    private const ushort Depth = 0;
+    private readonly bgfx.TextureHandle _textureHandle;
+    private readonly bgfx.TextureInfo _textureInfo;
 
-    private bgfx.TextureHandle _textureHandle;
-    private bgfx.TextureInfo _textureInfo;
-
-    public Texture2D(string path, bool mips, ushort numLayers)
+    public Texture2D(ushort width, ushort height, bool hasMips, ushort numLayers)
     {
-        var buffer = ImageResult.FromMemory(File.ReadAllBytes(path));
-
-        bgfx.Memory* bufferData;
-
-        fixed (void* data = buffer.Data)
-        {
-            bufferData = bgfx.make_ref(data, (uint)(buffer.Data.Length * sizeof(byte)));
-        }
+        var textureInfoBuffer = new bgfx.TextureInfo();
 
         _textureHandle = bgfx.create_texture_2d(
-            (ushort)buffer.Width,
-            (ushort)buffer.Height,
-            mips,
+            width,
+            height,
+            hasMips,
             numLayers,
             bgfx.TextureFormat.Count,
             0,
-            bufferData
+            null
         );
-
-        Init((ushort)buffer.Width, (ushort)buffer.Height, mips, numLayers, false);
-    }
-
-    public Texture2D(bool mips, ushort numLayers)
-    {
-        _textureHandle = bgfx.create_texture_2d_scaled(
-            bgfx.BackbufferRatio.Count,
-            mips,
-            numLayers,
-            bgfx.TextureFormat.Count,
-            0
-        );
-    }
-
-    public ushort Handle => _textureHandle.idx;
-
-    public ushort Width { get; private set; }
-
-    public ushort Height { get; private set; }
-
-    public ushort LayerCount { get; private set; }
-
-    public ushort MipMapCount { get; private set; }
-    
-    public bool ReadOnly { get; private set; }
-
-    public void UpdateTexture2D(string path, bool mips, ushort numLayers)
-    {
-        var buffer = ImageResult.FromMemory(File.ReadAllBytes(path));
-
-        bgfx.Memory* bufferData;
-
-        fixed (void* data = buffer.Data)
-        {
-            bufferData = bgfx.make_ref(data, (uint)(buffer.Data.Length * sizeof(byte)));
-        }
-    }
-
-    public void UpdateTexture2D(void* data, bool mips, ushort numLayers)
-    {
-        
-    }
-
-    private void Init(ushort width, ushort height, bool mips, ushort layerCount, bool readOnly)
-    {
-        var textureInfoBuffer = _textureInfo;
 
         bgfx.calc_texture_size(
             &textureInfoBuffer,
             width,
             height,
-            Depth,
+            0,
             false,
-            mips,
-            layerCount,
+            hasMips,
+            numLayers,
             bgfx.TextureFormat.Count
         );
 
         _textureInfo = textureInfoBuffer;
 
-        Width = _textureInfo.width;
-        Height = _textureInfo.height;
-        LayerCount = _textureInfo.numLayers;
-        MipMapCount = _textureInfo.numMips;
-        ReadOnly = readOnly;
+        XOffset = 0;
+        YOffset = 0;
+        
+        ReadOnly = false;
     }
 
-    private void ReleaseUnmanagedResources()
+    public Texture2D(void* data, uint size, ushort width, ushort height, bool hasMips, ushort numLayers)
     {
-        bgfx.destroy_texture(_textureHandle);
+        var textureInfoBuffer = new bgfx.TextureInfo();
+
+        var refData = bgfx.make_ref(data, size);
+
+        _textureHandle = bgfx.create_texture_2d(
+            width,
+            height,
+            hasMips,
+            numLayers,
+            bgfx.TextureFormat.Count,
+            0,
+            refData
+        );
+
+        bgfx.calc_texture_size(
+            &textureInfoBuffer,
+            width,
+            height,
+            0,
+            false,
+            hasMips,
+            numLayers,
+            bgfx.TextureFormat.Count
+        );
+
+        _textureInfo = textureInfoBuffer;
+
+        XOffset = 0;
+        YOffset = 0;
+        
+        ReadOnly = true;
+    }
+
+    public bool ReadOnly { get; }
+
+    public ushort Handle => _textureHandle.idx;
+
+    public ushort Width => _textureInfo.width;
+
+    public ushort XOffset { get; private set; }
+
+    public ushort YOffset { get; private set; }
+
+    public ushort Height => _textureInfo.height;
+
+    public ushort LayerCount => _textureInfo.numLayers;
+
+    public ushort MipMapCount => _textureInfo.numMips;
+
+    public uint Size => _textureInfo.storageSize;
+
+    public void UpdateTexture(void* data, uint size, ushort width, ushort height, 
+        ushort xOffset, ushort yOffset, ushort numLayers, byte mipLevel = 0)
+    {
+        var textureInfoBuffer = new bgfx.TextureInfo();
+        
+        if (ReadOnly)
+        {
+            throw new Exception("Texture not mutable!");
+        }
+
+        var refData = bgfx.make_ref(data, size);
+
+        bgfx.update_texture_2d(
+            _textureHandle,
+            numLayers,
+            mipLevel,
+            xOffset,
+            yOffset,
+            width,
+            height,
+            refData,
+            ushort.MaxValue
+        );
+
+        bgfx.calc_texture_size(
+            &textureInfoBuffer,
+            width, 
+            height,
+            0,
+            false,
+            mipLevel > 0,
+            numLayers, 
+            bgfx.TextureFormat.Count
+        );
+        
+        XOffset = xOffset;
+        YOffset = yOffset;
     }
 
     public void Dispose()
     {
         ReleaseUnmanagedResources();
         GC.SuppressFinalize(this);
+    }
+
+    private void ReleaseUnmanagedResources()
+    {
+        bgfx.destroy_texture(_textureHandle);
     }
 
     ~Texture2D()

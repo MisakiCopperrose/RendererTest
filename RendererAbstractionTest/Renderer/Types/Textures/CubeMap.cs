@@ -12,9 +12,17 @@ public class CubeMap : ITexture
     
     public ushort Height { get; }
     
+    public ushort XOffset { get; }
+
+    public ushort YOffset { get; }
+    
     public ushort LayerCount { get; }
     
     public ushort MipMapCount { get; }
+    
+    public uint Size { get; }
+
+    public bool ReadOnly { get; }
 
     private void ReleaseUnmanagedResources()
     {

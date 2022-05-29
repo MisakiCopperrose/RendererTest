@@ -1,7 +1,6 @@
-namespace RendererAbstractionTest.Renderer.Types.Buffers
+namespace RendererAbstractionTest.Renderer.Types.Buffers;
+
+public interface IBuffer : IDisposable
 {
-    public interface IBuffer
-    {
-        ushort Handle { get; }
-    }
+    ushort Handle { get; }
 }
