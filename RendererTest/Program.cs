@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using System.Numerics;
 using Bgfx;
-using RendererLibraries.BGFX;
 using Silk.NET.Core.Contexts;
 using Silk.NET.GLFW;
 
@@ -304,8 +303,8 @@ internal static unsafe class Program
             case NativeWindowFlags.DirectFB:
                 break;
             case NativeWindowFlags.Cocoa:
-                //window = (void*) nativeWindow.Cocoa!.Value;
-                window = MetalWindowTest.SetupMetalLayer(nativeWindow.Cocoa!.Value);
+                window = (void*) nativeWindow.Cocoa!.Value;
+                //window = MetalWindowTest.SetupMetalLayer(nativeWindow.Cocoa!.Value);
                 break;
             case NativeWindowFlags.UIKit:
                 break;

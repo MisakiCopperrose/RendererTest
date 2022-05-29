@@ -1,4 +1,4 @@
-using RendererLibraries.BGFX;
+using Bgfx;
 using Silk.NET.Core.Contexts;
 using Silk.NET.GLFW;
 
@@ -45,7 +45,7 @@ public unsafe class GlfwWindow : IDisposable, IWindow
         while (!_glfw.WindowShouldClose(_windowHandle))
         {
             _glfw.PollEvents();
-            
+
             RenderFrame?.Invoke();
         }
 
@@ -77,7 +77,8 @@ public unsafe class GlfwWindow : IDisposable, IWindow
             case NativeWindowFlags.DirectFB:
                 break;
             case NativeWindowFlags.Cocoa:
-                window = MetalWindowTest.SetupMetalLayer(nativeWindow.Cocoa!.Value);
+                //window = MetalWindowTest.SetupMetalLayer(nativeWindow.Cocoa!.Value);
+                window = (void*)nativeWindow.Cocoa!.Value;
                 break;
             case NativeWindowFlags.UIKit:
                 break;
@@ -117,7 +118,7 @@ public unsafe class GlfwWindow : IDisposable, IWindow
     private void Dispose(bool disposing)
     {
         ReleaseUnmanagedResources();
-        
+
         if (disposing)
         {
             _glfw.Dispose();
