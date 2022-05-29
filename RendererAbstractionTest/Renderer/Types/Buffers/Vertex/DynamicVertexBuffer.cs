@@ -11,12 +11,16 @@ public unsafe class DynamicVertexBuffer<TDataType> : IBuffer
     public DynamicVertexBuffer(uint numberOfVertices, VertexLayoutBuffer vertexLayoutBuffer,
         BufferFlags bufferFlags, bool resizeable = false)
     {
-        var layout = vertexLayoutBuffer.VertexLayout;
         var flags = (ushort)(resizeable
             ? (ushort)bufferFlags | (ushort)bgfx.BufferFlags.AllowResize
             : (ushort)bufferFlags);
+        var vertexLayout = vertexLayoutBuffer.VertexLayout;
 
-        _dynamicVertexBufferHandle = bgfx.create_dynamic_vertex_buffer(numberOfVertices, &layout, flags);
+        _dynamicVertexBufferHandle = bgfx.create_dynamic_vertex_buffer(
+            numberOfVertices,
+            &vertexLayout,
+            flags
+        );
     }
 
     public DynamicVertexBuffer(Span<TDataType> data, VertexLayoutBuffer vertexLayoutBuffer,
@@ -25,12 +29,16 @@ public unsafe class DynamicVertexBuffer<TDataType> : IBuffer
         fixed (void* dataP = data)
         {
             var dataHandle = bgfx.make_ref(dataP, (uint)(sizeof(TDataType) * data.Length));
-            var layout = vertexLayoutBuffer.VertexLayout;
+            var vertexLayout = vertexLayoutBuffer.VertexLayout;
             var flags = (ushort)(resizeable
                 ? (ushort)bufferFlags | (ushort)bgfx.BufferFlags.AllowResize
                 : (ushort)bufferFlags);
 
-            _dynamicVertexBufferHandle = bgfx.create_dynamic_vertex_buffer_mem(dataHandle, &layout, flags);
+            _dynamicVertexBufferHandle = bgfx.create_dynamic_vertex_buffer_mem(
+                dataHandle,
+                &vertexLayout,
+                flags
+            );
         }
     }
 

@@ -1,4 +1,4 @@
-namespace RendererAbstractionTest.Renderer.Types.Buffers.Vertex.Attributes;
+namespace RendererAbstractionTest.Renderer.Types.Buffers.Vertex.Layout;
 
 public enum VertexAttributes
 {

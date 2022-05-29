@@ -35,7 +35,7 @@ public unsafe class Shader : IDisposable
             case bgfx.RendererType.Gnm:
                 return "shaders\\pssl\\";
             case bgfx.RendererType.Metal:
-                return "Shaders\\metal\\";
+                return "Shaders/metal/";
             case bgfx.RendererType.Nvn:
                 break;
             case bgfx.RendererType.OpenGLES:

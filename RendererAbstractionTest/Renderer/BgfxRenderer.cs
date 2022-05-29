@@ -21,12 +21,6 @@ public unsafe class BgfxRenderer : IDisposable
     private readonly TaskFactory _initTasks;
     private readonly IWindow _window;
 
-    private static readonly Vector3 CameraPosition = new(0.0f, 0.0f, 5.0f);
-    private static readonly Vector3 CameraTarget = Vector3.Zero;
-    private static readonly Vector3 CameraDirection = Vector3.Normalize(CameraPosition - CameraTarget);
-    private static readonly Vector3 CameraRight = Vector3.Normalize(Vector3.Cross(Vector3.UnitY, CameraDirection));
-    private static readonly Vector3 CameraUp = Vector3.Cross(CameraDirection, CameraRight);
-
     public BgfxRenderer(IWindow window)
     {
         _window = window;
@@ -89,43 +83,42 @@ public unsafe class BgfxRenderer : IDisposable
         bgfx.set_view_clear(
             ClearView,
             (ushort)(bgfx.ClearFlags.Color | bgfx.ClearFlags.Depth),
-            0x303030ff,
+            0x443355FF,
             1.0f,
             0
         );
 
-        bgfx.set_view_rect(0, 0, 0, (ushort)_window.Width, (ushort)_window.Height);
-
         var vertexBuffer = new VertexBuffer<PosColor>(Cube.Vertices, PosColor.VertexLayoutBuffer, BufferFlags.None);
-        var indexBuffer = new IndexBuffer<int>(Cube.Indices, BufferFlags.None);
+        var indexBuffer = new IndexBuffer<byte>(Cube.Indices, BufferFlags.None);
         var vertexShader = new Shader("vs_cubes");
         var fragmentShader = new Shader("fs_cubes");
-        var program = new ShaderProgram(vertexShader, fragmentShader);
+        var program = new ShaderProgram(vertexShader, fragmentShader, true);
 
         var showStats = false;
         var exit = false;
 
         while (!exit)
         {
-            bgfx.touch(ClearView);
+            var at = Vector3.Zero;
+            var eye = new Vector3(0, 0, -35);
 
-            var lookAt = Matrix4x4.CreateLookAt(CameraPosition, CameraTarget, CameraUp);
-
-            var projection = Matrix4x4.CreatePerspectiveFieldOfView(
+            var view = Matrix4x4.CreateLookAt(at, eye, Vector3.UnitY);
+            var proj = Matrix4x4.CreatePerspectiveFieldOfView(
                 90f * MathF.PI / 180f,
-                800f / 600f,
-                0.01f,
-                1000.0f
+                (float)_window.Width/ _window.Height,
+                0.1f,
+                100f
             );
 
-            bgfx.set_view_transform(0, &lookAt, &projection);
+            bgfx.set_view_transform(0, &view, &proj);
 
-            var mtxX = Matrix4x4.CreateRotationX(20f);
-            var mtxY = Matrix4x4.CreateRotationY(25f);
+            bgfx.set_view_rect(ClearView, 0, 0, (ushort)_window.Width, (ushort)_window.Height);
 
-            var mtx = mtxX * mtxY;
+            bgfx.touch(ClearView);
 
-            bgfx.set_transform(&mtx, 1);
+            bgfx.dbg_text_clear(0, false);
+
+            bgfx.set_debug((uint)(showStats ? bgfx.DebugFlags.Stats : bgfx.DebugFlags.Text));
 
             bgfx.set_vertex_buffer(
                 0,
@@ -146,6 +139,8 @@ public unsafe class BgfxRenderer : IDisposable
                 (uint)Cube.Indices.Length
             );
 
+            bgfx.set_state((ulong)bgfx.StateFlags.Default, 1);
+
             bgfx.submit(
                 ClearView,
                 new bgfx.ProgramHandle
@@ -155,10 +150,6 @@ public unsafe class BgfxRenderer : IDisposable
                 0,
                 (byte)bgfx.DiscardFlags.All
             );
-
-            bgfx.dbg_text_clear(0, false);
-
-            bgfx.set_debug((uint)(showStats ? bgfx.DebugFlags.Stats : bgfx.DebugFlags.Text));
 
             bgfx.frame(false);
         }

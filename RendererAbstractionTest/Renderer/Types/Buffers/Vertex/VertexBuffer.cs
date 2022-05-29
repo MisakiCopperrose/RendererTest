@@ -12,10 +12,14 @@ public unsafe class VertexBuffer<TDataType> : IBuffer
     {
         fixed (void* dataP = data)
         {
+            var vertexLayout = vertexLayoutBuffer.VertexLayout;
             var dataHandle = bgfx.make_ref(dataP, (uint)(sizeof(TDataType) * data.Length));
-            var layout = vertexLayoutBuffer.VertexLayout;
-            
-            _vertexBufferHandle = bgfx.create_vertex_buffer(dataHandle, &layout, (ushort)bufferFlag);
+
+            _vertexBufferHandle = bgfx.create_vertex_buffer(
+                dataHandle,
+                &vertexLayout,
+                (ushort)bufferFlag
+            );
         }
     }
 
