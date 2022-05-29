@@ -1,7 +1,7 @@
+using Bgfx;
 using RendererAbstractionTest.Renderer.Enums;
 using RendererAbstractionTest.Renderer.Utils.Capabilities;
 using RendererAbstractionTest.Renderer.Utils.Statistics;
-using RendererLibraries.BGFX;
 
 namespace RendererAbstractionTest.Renderer.Utils;
 

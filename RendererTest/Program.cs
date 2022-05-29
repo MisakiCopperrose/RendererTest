@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Numerics;
+using Bgfx;
 using RendererLibraries.BGFX;
 using Silk.NET.Core.Contexts;
 using Silk.NET.GLFW;

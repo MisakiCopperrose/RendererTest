@@ -1,5 +1,5 @@
+using Bgfx;
 using RendererAbstractionTest.Renderer.Types.Buffers.Vertex.Layout;
-using RendererLibraries.BGFX;
 
 namespace RendererAbstractionTest.Renderer.Types.Buffers.Vertex;
 

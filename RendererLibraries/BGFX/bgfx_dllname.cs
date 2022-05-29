@@ -1,4 +1,4 @@
-namespace RendererLibraries.BGFX;
+namespace Bgfx;
 
 public static partial class bgfx
 {

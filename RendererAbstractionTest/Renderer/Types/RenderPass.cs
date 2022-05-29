@@ -1,7 +1,7 @@
 using System.Numerics;
+using Bgfx;
 using RendererAbstractionTest.Renderer.Structs;
 using RendererAbstractionTest.Renderer.Types.Buffers;
-using RendererLibraries.BGFX;
 
 namespace RendererAbstractionTest.Renderer.Types;
 

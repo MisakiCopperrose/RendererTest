@@ -1,4 +1,5 @@
 using System.Numerics;
+using Bgfx;
 using RendererAbstractionTest.Renderer.Meshes;
 using RendererAbstractionTest.Renderer.Structs;
 using RendererAbstractionTest.Renderer.Types.Buffers;
@@ -6,7 +7,6 @@ using RendererAbstractionTest.Renderer.Types.Buffers.Index;
 using RendererAbstractionTest.Renderer.Types.Buffers.Vertex;
 using RendererAbstractionTest.Renderer.Types.Shaders;
 using RendererAbstractionTest.Window;
-using RendererLibraries.BGFX;
 
 namespace RendererAbstractionTest.Renderer;
 
@@ -44,7 +44,7 @@ public unsafe class BgfxRenderer : IDisposable
     {
         _resolution = new bgfx.Resolution
         {
-            format = bgfx.TextureFormat.BC1,
+            format = bgfx.TextureFormat.Count,
             width = (uint)_window.Width,
             height = (uint)_window.Height,
             reset = (uint)bgfx.ResetFlags.Vsync,
@@ -65,7 +65,7 @@ public unsafe class BgfxRenderer : IDisposable
         {
             limits = default,
             type = bgfx.RendererType.Count,
-            vendorId = (ushort)bgfx.PciIdFlags.None,
+            vendorId = (ushort)bgfx.PciIdFlags.Apple,
             deviceId = 0,
             capabilities = 0,
             debug = 0,

@@ -1,4 +1,4 @@
-using RendererLibraries.BGFX;
+using Bgfx;
 
 namespace RendererAbstractionTest.Renderer.Types.Buffers;
 

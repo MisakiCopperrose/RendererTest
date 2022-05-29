@@ -21,6 +21,9 @@
       <None Update="BGFX\external\macOS\libmetal-layer-glfw.dylib">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="BGFX\external\macOS\arm64\libbgfxDebug.a">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
