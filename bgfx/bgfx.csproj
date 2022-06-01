@@ -7,12 +7,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <Prefer32bit>false</Prefer32bit>
-      <PlatformTarget>AnyCPU</PlatformTarget>
-    </PropertyGroup>
-
-    <ItemGroup>
+  <ItemGroup>
       <None Update="external\macOS\arm64\libbgfx-shared-libDebug.dylib">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
@@ -23,13 +18,40 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="external\Windows\x64\bgfx-shared-libDebug.exp">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="external\Windows\x64\bgfx-shared-libDebug.lib">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="external\Windows\x64\bgfx-shared-libDebug.pdb">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="external\Windows\x64\bgfx-shared-libDebug.ilk">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="external\Windows\x64\bgfxDebug.lib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="external\Windows\x64\bgfxDebug.pdb">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="external\Windows\x64\bimg_decodeDebug.lib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="external\Windows\x64\bimg_decodeDebug.pdb">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="external\Windows\x64\bimgDebug.lib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="external\Windows\x64\bimgDebug.pdb">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="external\Windows\x64\bxDebug.lib">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="external\Windows\x64\bxDebug.pdb">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
 
