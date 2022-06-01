@@ -1112,6 +1112,5 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Bgfx\Bgfx.csproj" />
-      <ProjectReference Include="..\RendererLibraries\RendererLibraries.csproj" />
     </ItemGroup>
 </Project>
