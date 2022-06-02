@@ -1,4 +1,4 @@
-using Bgfx;
+using Silk.NET.Core;
 using Silk.NET.Core.Contexts;
 using Silk.NET.GLFW;
 
@@ -9,16 +9,10 @@ public unsafe class GlfwWindow : IDisposable, IWindow
     private readonly Glfw _glfw = Glfw.GetApi();
     private readonly WindowHandle* _windowHandle;
 
-    public void* WindowHandle { get; }
+    public int Width { get; } = 1920;
 
-    public void* DisplayHandle { get; }
-
-    public int Width { get; } = 800;
-
-    public int Height { get; } = 600;
-
-    public Action RenderFrame { get; set; }
-
+    public int Height { get; } = 1080;
+    
     public GlfwWindow()
     {
         _glfw.SetErrorCallback(ErrorCallback);
@@ -35,21 +29,16 @@ public unsafe class GlfwWindow : IDisposable, IWindow
 
             throw new GlfwException("GLFW WINDOW CREATION FAILED!");
         }
-
-        WindowHandle = GlfwNativeWindowHandle(_windowHandle, out var display);
-        DisplayHandle = display;
     }
 
-    public void Start()
+    public bool WindowShouldClose => _glfw.WindowShouldClose(_windowHandle);
+
+    public void PollEvents()
     {
-        while (!_glfw.WindowShouldClose(_windowHandle))
+        while (!WindowShouldClose)
         {
             _glfw.PollEvents();
-
-            RenderFrame?.Invoke();
         }
-
-        CloseWindow();
     }
 
     public void CloseWindow()
@@ -57,9 +46,9 @@ public unsafe class GlfwWindow : IDisposable, IWindow
         _glfw.SetWindowShouldClose(_windowHandle, true);
     }
 
-    private void* GlfwNativeWindowHandle(WindowHandle* windowHandle, out void* display)
+    public void* NativeWindowHandle(out void* display)
     {
-        var nativeWindow = new GlfwNativeWindow(_glfw, windowHandle);
+        var nativeWindow = new GlfwNativeWindow(_glfw, _windowHandle);
 
         display = default;
 

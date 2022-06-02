@@ -1,5 +1,6 @@
 using Bgfx;
 using RendererAbstractionTest.Renderer.Types.Buffers.Vertex.Layout;
+using RendererAbstractionTest.Renderer.Utils;
 
 namespace RendererAbstractionTest.Renderer.Types.Buffers.Vertex;
 
@@ -10,17 +11,10 @@ public unsafe class VertexBuffer<TDataType> : IBuffer
 
     public VertexBuffer(Span<TDataType> data, VertexLayoutBuffer vertexLayoutBuffer, BufferFlags bufferFlag)
     {
-        fixed (void* dataP = data)
-        {
-            var vertexLayout = vertexLayoutBuffer.VertexLayout;
-            var dataHandle = bgfx.make_ref(dataP, (uint)(sizeof(TDataType) * data.Length));
+        var vertexLayout = vertexLayoutBuffer.VertexLayout;
+        var dataBuffer = MemoryUtils.Create(data.ToArray());
 
-            _vertexBufferHandle = bgfx.create_vertex_buffer(
-                dataHandle,
-                &vertexLayout,
-                (ushort)bufferFlag
-            );
-        }
+        _vertexBufferHandle = bgfx.create_vertex_buffer(dataBuffer, &vertexLayout, (ushort) bufferFlag);
     }
 
     public ushort Handle => _vertexBufferHandle.idx;

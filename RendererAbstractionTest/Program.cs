@@ -5,6 +5,6 @@ var window = new GlfwWindow();
 
 var renderer = new BgfxRenderer(window);
 
-renderer.Init();
+renderer.Start();
 
-window.Start();
+window.PollEvents();

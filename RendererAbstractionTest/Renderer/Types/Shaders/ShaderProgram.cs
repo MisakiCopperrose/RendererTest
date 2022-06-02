@@ -18,13 +18,8 @@ public class ShaderProgram : IDisposable
             idx = fragmentShader.Handle
         };
 
-        _programHandle = bgfx.create_program(vertexHandle, fragmentHandle, false);
-
-        if (!destroyAfterUse) 
-            return;
-        
-        vertexShader.Dispose();
-        fragmentShader.Dispose();
+        // TODO: change destroy event
+        _programHandle = bgfx.create_program(vertexHandle, fragmentHandle, true);
     }
 
     public ShaderProgram(Shader computeShader, bool destroyAfterUse = false)

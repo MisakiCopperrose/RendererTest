@@ -1,4 +1,5 @@
 using Bgfx;
+using RendererAbstractionTest.Renderer.Utils;
 
 namespace RendererAbstractionTest.Renderer.Types.Buffers.Index;
 
@@ -9,16 +10,13 @@ public unsafe class IndexBuffer<TDataType> : IBuffer
 
     public IndexBuffer(Span<TDataType> data, BufferFlags bufferFlags)
     {
-        var flags = (ushort)(IndexBufferUtils.IsInt32<TDataType>()
-            ? (ushort)bufferFlags | (ushort)bgfx.BufferFlags.Index32
-            : (ushort)bufferFlags);
+        var flags = (ushort) (IndexBufferUtils.IsInt32<TDataType>()
+            ? (ushort) bufferFlags | (ushort) bgfx.BufferFlags.Index32
+            : (ushort) bufferFlags);
 
-        fixed (void* dataP = data)
-        {
-            var dataHandle = bgfx.make_ref(dataP, (uint)(sizeof(TDataType) * data.Length));
+        var dataBuffer = MemoryUtils.Create(data.ToArray());
 
-            _indexBufferHandle = bgfx.create_index_buffer(dataHandle, flags);
-        }
+        _indexBufferHandle = bgfx.create_index_buffer(dataBuffer, flags);
     }
 
     public ushort Handle => _indexBufferHandle.idx;

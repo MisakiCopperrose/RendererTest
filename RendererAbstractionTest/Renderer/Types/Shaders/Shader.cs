@@ -1,4 +1,5 @@
 using Bgfx;
+using RendererAbstractionTest.Renderer.Utils;
 
 namespace RendererAbstractionTest.Renderer.Types.Shaders;
 
@@ -10,12 +11,9 @@ public unsafe class Shader : IDisposable
     {
         var stringPath = $"{GetShaderPath()}{filename}.bin";
         var fileBytes = File.ReadAllBytes(stringPath);
-
-        fixed (void* pFileBytes = fileBytes)
-        {
-            var dataHandle = bgfx.make_ref(pFileBytes, (uint)(sizeof(byte) * fileBytes.Length));
-            _shaderHandle =  bgfx.create_shader(dataHandle);
-        }
+        var shaderBuffer = MemoryUtils.Create(fileBytes);
+        
+        _shaderHandle = bgfx.create_shader(shaderBuffer);
     }
 
     public ushort Handle => _shaderHandle.idx;
@@ -31,7 +29,7 @@ public unsafe class Shader : IDisposable
             case bgfx.RendererType.Direct3D11:
                 return "shaders\\dx11\\";
             case bgfx.RendererType.Direct3D12:
-                return "shaders\\dx12\\";
+                return "shaders\\dx11\\";
             case bgfx.RendererType.Gnm:
                 return "shaders\\pssl\\";
             case bgfx.RendererType.Metal:
@@ -53,7 +51,7 @@ public unsafe class Shader : IDisposable
             default:
                 return string.Empty;
         }
-        
+
         return string.Empty;
     }
 

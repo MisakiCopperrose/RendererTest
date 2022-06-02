@@ -49,7 +49,7 @@ public static class Cube
         }
     };
 
-    public static readonly byte[] Indices =
+    public static readonly ushort[] Indices =
     {
         0, 1, 2, // 0
         1, 3, 2,

@@ -12,152 +12,101 @@ namespace RendererAbstractionTest.Renderer;
 
 public unsafe class BgfxRenderer : IDisposable
 {
-    private const int ClearView = 0;
-
-    private bgfx.Init _init;
-    private bgfx.Resolution _resolution;
-    private bgfx.PlatformData _platformData;
-
-    private readonly TaskFactory _initTasks;
     private readonly IWindow _window;
+    private readonly Task _update;
+
+    private VertexBuffer<PosColor> _vertexBuffer;
+    private IndexBuffer<ushort> _indexBuffer;
+    private ShaderProgram _shaderProgram;
 
     public BgfxRenderer(IWindow window)
     {
         _window = window;
-        _initTasks = new TaskFactory();
 
-        _window.RenderFrame += () => RenderFrame();
+        _update = new Task(Update);
     }
 
-    public void Init()
+    public void Start()
     {
-        RenderFrame();
-
-        _initTasks.StartNew(InitRendererTask);
-
-        while (RenderFrame() != bgfx.RenderFrame.NoContext)
-        {
-        }
+        _update.Start();
     }
 
-    private void InitRendererTask()
+    private void Update()
     {
-        _resolution = new bgfx.Resolution
+        bgfx.render_frame(8);
+
+        var pd = new bgfx.PlatformData
         {
-            format = bgfx.TextureFormat.Count,
-            width = (uint)_window.Width,
-            height = (uint)_window.Height,
-            reset = (uint)bgfx.ResetFlags.Vsync,
-            numBackBuffers = default,
-            maxFrameLatency = default
+            nwh = _window.NativeWindowHandle(out var display)
         };
 
-        _platformData = new bgfx.PlatformData
-        {
-            ndt = _window.DisplayHandle,
-            nwh = _window.WindowHandle,
-            context = default,
-            backBuffer = default,
-            backBufferDS = default
-        };
+        bgfx.set_platform_data(&pd);
 
-        _init = new bgfx.Init
-        {
-            limits = default,
-            type = bgfx.RendererType.Count,
-            vendorId = (ushort)bgfx.PciIdFlags.Apple,
-            deviceId = 0,
-            capabilities = 0,
-            debug = 0,
-            profile = 0,
-            platformData = _platformData,
-            resolution = _resolution,
-            callback = default,
-            allocator = default
-        };
+        var init = new bgfx.Init();
 
-        var init = _init;
+        bgfx.init_ctor(&init);
+
+        init.type = bgfx.RendererType.Direct3D12;
+        init.resolution = new bgfx.Resolution
+        {
+            format = bgfx.TextureFormat.RGBA8, // Format needed for d3d11/12 backend
+            width = (uint) _window.Width,
+            height = (uint) _window.Height,
+            reset = (uint) bgfx.ResetFlags.Vsync | (uint) bgfx.ResetFlags.FlushAfterRender
+        };
 
         bgfx.init(&init);
 
-        bgfx.set_view_clear(
-            ClearView,
-            (ushort)(bgfx.ClearFlags.Color | bgfx.ClearFlags.Depth),
-            0x443355FF,
-            1.0f,
-            0
-        );
+        _vertexBuffer =
+            new VertexBuffer<PosColor>(Cube.Vertices, PosColor.VertexLayoutBuffer, BufferFlags.None);
+        _indexBuffer =
+            new IndexBuffer<ushort>(Cube.Indices, BufferFlags.None);
 
-        var vertexBuffer = new VertexBuffer<PosColor>(Cube.Vertices, PosColor.VertexLayoutBuffer, BufferFlags.None);
-        var indexBuffer = new IndexBuffer<byte>(Cube.Indices, BufferFlags.None);
         var vertexShader = new Shader("vs_cubes");
         var fragmentShader = new Shader("fs_cubes");
-        var program = new ShaderProgram(vertexShader, fragmentShader, true);
 
-        var showStats = false;
-        var exit = false;
+        _shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
 
-        while (!exit)
+        bgfx.reset((uint) _window.Width, (uint) _window.Height,
+            (uint) bgfx.ResetFlags.Vsync | (uint) bgfx.ResetFlags.FlushAfterRender, bgfx.TextureFormat.Count);
+
+        bgfx.set_debug((uint) (bgfx.DebugFlags.Text | bgfx.DebugFlags.Stats));
+
+
+        while (!_window.WindowShouldClose)
         {
-            var at = Vector3.Zero;
-            var eye = new Vector3(0, 0, -35);
+            bgfx.set_view_clear(0, (ushort) (bgfx.ClearFlags.Color | bgfx.ClearFlags.Depth), 0x443355FF, 1, 0);
+            bgfx.set_view_rect(0, 0, 0, (ushort) _window.Width, (ushort) _window.Height);
 
-            var view = Matrix4x4.CreateLookAt(at, eye, Vector3.UnitY);
-            var proj = Matrix4x4.CreatePerspectiveFieldOfView(
-                90f * MathF.PI / 180f,
-                (float)_window.Width/ _window.Height,
-                0.1f,
-                100f
-            );
+            var viewMatrix = Matrix4x4.CreateLookAt(new Vector3(0.0f, 0.0f, -35.0f), Vector3.Zero, Vector3.UnitY);
+            var projMatrix = Matrix4x4.CreatePerspectiveFieldOfView((float) Math.PI / 3,
+                (float) _window.Width / _window.Height, 0.1f, 100.0f);
 
-            bgfx.set_view_transform(0, &view, &proj);
+            bgfx.set_view_transform(0, &viewMatrix.M11, &projMatrix.M11);
 
-            bgfx.set_view_rect(ClearView, 0, 0, (ushort)_window.Width, (ushort)_window.Height);
+            bgfx.touch(0);
 
-            bgfx.touch(ClearView);
-
-            bgfx.dbg_text_clear(0, false);
-
-            bgfx.set_debug((uint)(showStats ? bgfx.DebugFlags.Stats : bgfx.DebugFlags.Text));
-
-            bgfx.set_vertex_buffer(
-                0,
-                new bgfx.VertexBufferHandle
+            bgfx.set_vertex_buffer(0, new bgfx.VertexBufferHandle
                 {
-                    idx = vertexBuffer.Handle
+                    idx = _vertexBuffer.Handle
                 },
-                0,
-                (uint)Cube.Vertices.Length
-            );
+                0, (uint) Cube.Vertices.Length);
 
-            bgfx.set_index_buffer(
-                new bgfx.IndexBufferHandle
+            bgfx.set_index_buffer(new bgfx.IndexBufferHandle
                 {
-                    idx = indexBuffer.Handle
+                    idx = _indexBuffer.Handle
                 },
-                0,
-                (uint)Cube.Indices.Length
-            );
+                0, (uint) Cube.Indices.Length);
 
-            bgfx.set_state((ulong)bgfx.StateFlags.Default, 1);
+            bgfx.set_state((ulong) bgfx.StateFlags.Default, 0);
 
-            bgfx.submit(
-                ClearView,
-                new bgfx.ProgramHandle
-                {
-                    idx = program.Handle
-                },
-                0,
-                (byte)bgfx.DiscardFlags.All
-            );
+            bgfx.submit(0, new bgfx.ProgramHandle
+            {
+                idx = _shaderProgram.Handle
+            }, 0, 0);
 
             bgfx.frame(false);
         }
-    }
-
-    private bgfx.RenderFrame RenderFrame()
-    {
-        return bgfx.render_frame(16);
     }
 
     private void ReleaseUnmanagedResources()

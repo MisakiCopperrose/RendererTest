@@ -2,15 +2,13 @@ namespace RendererAbstractionTest.Window;
 
 public unsafe interface IWindow
 {
-    public void* WindowHandle { get; }
+    int Width { get; }
 
-    public void* DisplayHandle { get; }
+    int Height { get; }
 
-    public int Width { get; }
-    
-    public int Height { get; }
-    
-    public Action RenderFrame { get; set; }
+    bool WindowShouldClose { get; }
 
-    public void Start();
+    void PollEvents();
+
+    void* NativeWindowHandle(out void* display);
 }
