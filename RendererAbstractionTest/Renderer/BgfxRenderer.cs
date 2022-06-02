@@ -58,9 +58,9 @@ public unsafe class BgfxRenderer : IDisposable
         bgfx.init(&init);
 
         _vertexBuffer =
-            new VertexBuffer<PosColor>(Cube.Vertices, PosColor.VertexLayoutBuffer, BufferFlags.None);
+            new VertexBuffer<PosColor>(CubeBgfx.Vertices, PosColor.VertexLayoutBuffer, BufferFlags.None);
         _indexBuffer =
-            new IndexBuffer<ushort>(Cube.Indices, BufferFlags.None);
+            new IndexBuffer<ushort>(CubeBgfx.Indices, BufferFlags.None);
 
         var vertexShader = new Shader("vs_cubes");
         var fragmentShader = new Shader("fs_cubes");
@@ -72,31 +72,40 @@ public unsafe class BgfxRenderer : IDisposable
 
         bgfx.set_debug((uint) (bgfx.DebugFlags.Text | bgfx.DebugFlags.Stats));
 
+        var counter = 0;
 
         while (!_window.WindowShouldClose)
         {
+            counter++;
+            
             bgfx.set_view_clear(0, (ushort) (bgfx.ClearFlags.Color | bgfx.ClearFlags.Depth), 0x443355FF, 1, 0);
             bgfx.set_view_rect(0, 0, 0, (ushort) _window.Width, (ushort) _window.Height);
 
-            var viewMatrix = Matrix4x4.CreateLookAt(new Vector3(0.0f, 0.0f, -35.0f), Vector3.Zero, Vector3.UnitY);
-            var projMatrix = Matrix4x4.CreatePerspectiveFieldOfView((float) Math.PI / 3,
-                (float) _window.Width / _window.Height, 0.1f, 100.0f);
+            var viewMatrix = Matrix4x4.CreateLookAt(new Vector3(0.0f, 0.0f, -5.0f), Vector3.Zero, Vector3.UnitY);
+            var projMatrix = Matrix4x4.CreatePerspectiveFieldOfView(MathF.PI / 3f, (float) _window.Width / _window.Height, 0.1f, 100.0f);
 
-            bgfx.set_view_transform(0, &viewMatrix.M11, &projMatrix.M11);
+            bgfx.set_view_transform(0, &viewMatrix, &projMatrix);
 
             bgfx.touch(0);
+
+            var rX = Matrix4x4.CreateRotationX(SineWave(counter));
+            var rY = Matrix4x4.CreateRotationY(SineWave(counter));
+
+            var rXY = rX * rY;
+
+            bgfx.set_transform(&rXY, 1);
 
             bgfx.set_vertex_buffer(0, new bgfx.VertexBufferHandle
                 {
                     idx = _vertexBuffer.Handle
                 },
-                0, (uint) Cube.Vertices.Length);
+                0, (uint) CubeBgfx.Vertices.Length);
 
             bgfx.set_index_buffer(new bgfx.IndexBufferHandle
                 {
                     idx = _indexBuffer.Handle
                 },
-                0, (uint) Cube.Indices.Length);
+                0, (uint) CubeBgfx.Indices.Length);
 
             bgfx.set_state((ulong) bgfx.StateFlags.Default, 0);
 
@@ -107,6 +116,11 @@ public unsafe class BgfxRenderer : IDisposable
 
             bgfx.frame(false);
         }
+    }
+
+    private float SineWave(float input, float amplitude = 10f, float frequency = 0.0001f)
+    {
+        return amplitude * MathF.Sin(2f * MathF.PI * frequency * input);
     }
 
     private void ReleaseUnmanagedResources()

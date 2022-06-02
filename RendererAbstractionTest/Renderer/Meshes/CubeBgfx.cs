@@ -3,49 +3,49 @@ using RendererAbstractionTest.Renderer.Structs;
 
 namespace RendererAbstractionTest.Renderer.Meshes;
 
-public static class Cube
+public static class CubeBgfx
 {
     public static readonly PosColor[] Vertices =
     {
         new()
         {
             Position = new Vector3(-1f, 1f, 1f),
-            Colour = 0xff000000
+            Colour = new Vector4(1, 0, 0, 1)
         },
         new()
         {
             Position = new Vector3(1f, 1f, 1f),
-            Colour = 0xff0000ff
+            Colour = new Vector4(0, 1, 0, 1)
         },
         new()
         {
             Position = new Vector3(-1f, -1f, 1f),
-            Colour = 0xff00ff00
+            Colour = new Vector4(0, 0, 1, 1)
         },
         new()
         {
             Position = new Vector3(1f, -1f, 1f),
-            Colour = 0xff00ffff
+            Colour = new Vector4(0, 1, 0, 1)
         },
         new()
         {
             Position = new Vector3(-1f, 1f, -1f),
-            Colour = 0xffff0000
+            Colour = new Vector4(1, 0, 0, 1)
         },
         new()
         {
             Position = new Vector3(1f, 1f, -1f),
-            Colour = 0xffff00ff
+            Colour = new Vector4(0, 1, 0, 1)
         },
         new()
         {
             Position = new Vector3(-1f, -1f, -1f),
-            Colour = 0xffffff00
+            Colour = new Vector4(0, 0, 1, 1)
         },
         new()
         {
             Position = new Vector3(1f, -1f, -1f),
-            Colour = 0xffffffff
+            Colour = new Vector4(0, 1, 0, 1)
         }
     };
 

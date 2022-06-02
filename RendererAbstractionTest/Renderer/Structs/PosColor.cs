@@ -8,16 +8,16 @@ public struct PosColor
     public PosColor()
     {
         Position = Vector3.Zero;
-        Colour = 0xff000000;
+        Colour = Vector4.Zero;
     }
 
     public static VertexLayoutBuffer VertexLayoutBuffer => new VertexLayoutBuffer()
         .Begin()
         .AddFloatAttribute(VertexAttributes.Position, VertexAttributeLengths.Vec3)
-        .AddByteAttribute(VertexAttributes.Color0, VertexAttributeLengths.Vec4, true)
+        .AddFloatAttribute(VertexAttributes.Color0, VertexAttributeLengths.Vec4)
         .End();
 
     public Vector3 Position { get; set; }
 
-    public uint Colour { get; set; }
+    public Vector4 Colour { get; set; }
 }
