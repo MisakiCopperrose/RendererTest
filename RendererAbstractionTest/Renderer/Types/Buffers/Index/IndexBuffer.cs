@@ -8,13 +8,13 @@ public unsafe class IndexBuffer<TDataType> : IBuffer
 {
     private readonly bgfx.IndexBufferHandle _indexBufferHandle;
 
-    public IndexBuffer(Span<TDataType> data, BufferFlags bufferFlags)
+    public IndexBuffer(TDataType[] data, BufferFlags bufferFlags)
     {
         var flags = (ushort) (IndexBufferUtils.IsInt32<TDataType>()
             ? (ushort) bufferFlags | (ushort) bgfx.BufferFlags.Index32
             : (ushort) bufferFlags);
 
-        var dataBuffer = MemoryUtils.Create(data.ToArray());
+        var dataBuffer = MemoryUtils.Create(data);
 
         _indexBufferHandle = bgfx.create_index_buffer(dataBuffer, flags);
     }

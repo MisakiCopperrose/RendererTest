@@ -46,7 +46,7 @@ public unsafe class BgfxRenderer : IDisposable
 
         bgfx.init_ctor(&init);
 
-        init.type = bgfx.RendererType.Direct3D12;
+        init.type = bgfx.RendererType.Count;
         init.resolution = new bgfx.Resolution
         {
             format = bgfx.TextureFormat.RGBA8, // Format needed for d3d11/12 backend
@@ -58,7 +58,7 @@ public unsafe class BgfxRenderer : IDisposable
         bgfx.init(&init);
 
         _vertexBuffer =
-            new VertexBuffer<PosColor>(CubeBgfx.Vertices, PosColor.VertexLayoutBuffer, BufferFlags.None);
+            new VertexBuffer<PosColor>(CubeBgfx.Vertices.Reverse().ToArray(), PosColor.VertexLayoutBuffer, BufferFlags.None);
         _indexBuffer =
             new IndexBuffer<ushort>(CubeBgfx.Indices, BufferFlags.None);
 

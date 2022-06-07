@@ -9,10 +9,10 @@ public unsafe class VertexBuffer<TDataType> : IBuffer
 {
     private readonly bgfx.VertexBufferHandle _vertexBufferHandle;
 
-    public VertexBuffer(Span<TDataType> data, VertexLayoutBuffer vertexLayoutBuffer, BufferFlags bufferFlag)
+    public VertexBuffer(TDataType[] data, VertexLayoutBuffer vertexLayoutBuffer, BufferFlags bufferFlag)
     {
         var vertexLayout = vertexLayoutBuffer.VertexLayout;
-        var dataBuffer = MemoryUtils.Create(data.ToArray());
+        var dataBuffer = MemoryUtils.Create(data);
 
         _vertexBufferHandle = bgfx.create_vertex_buffer(dataBuffer, &vertexLayout, (ushort) bufferFlag);
     }

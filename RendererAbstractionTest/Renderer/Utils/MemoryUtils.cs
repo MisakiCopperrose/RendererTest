@@ -11,9 +11,9 @@ public static unsafe class MemoryUtils
     }
 
     public static bgfx.Memory* Create<T>(T[] data) 
-        where T : struct
+        where T : unmanaged
     {
-        if (data == null || data.Length == 0)
+        if (data is null || !data.Any())
             throw new ArgumentNullException(nameof(data));
 
         var gcHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
