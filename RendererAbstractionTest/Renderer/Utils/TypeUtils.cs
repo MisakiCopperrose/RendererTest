@@ -1,6 +1,6 @@
-namespace RendererAbstractionTest.Renderer.Types.Buffers.Index;
+namespace RendererAbstractionTest.Renderer.Utils;
 
-public static class IndexBufferUtils
+public static class TypeUtils
 {
     public static bool IsInt32<TDataType>()
         where TDataType : unmanaged

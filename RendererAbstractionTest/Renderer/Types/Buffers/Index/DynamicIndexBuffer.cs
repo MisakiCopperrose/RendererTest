@@ -1,4 +1,5 @@
 using Bgfx;
+using RendererAbstractionTest.Renderer.Utils;
 
 namespace RendererAbstractionTest.Renderer.Types.Buffers.Index;
 
@@ -11,31 +12,24 @@ public unsafe class DynamicIndexBuffer<TDataType> : IBuffer
     {
         _dynamicIndexBufferHandle = bgfx.create_dynamic_index_buffer(numberOfIndices, (ushort)bufferFlags);
     }
-    
-    public DynamicIndexBuffer(Span<TDataType> data, BufferFlags bufferFlags)
+
+    public DynamicIndexBuffer(TDataType[] data, BufferFlags bufferFlags)
     {
-        var flags = (ushort)(IndexBufferUtils.IsInt32<TDataType>()
+        var dataHandle = MemoryUtils.Create(data);
+        var flags = (ushort)(TypeUtils.IsInt32<TDataType>()
             ? (ushort)bufferFlags | (ushort)bgfx.BufferFlags.Index32
             : (ushort)bufferFlags);
 
-        fixed (void* dataP = data)
-        {
-            var dataHandle = bgfx.make_ref(dataP, (uint)(sizeof(TDataType) * data.Length));
-
-            _dynamicIndexBufferHandle = bgfx.create_dynamic_index_buffer_mem(dataHandle, flags);
-        }
+        _dynamicIndexBufferHandle = bgfx.create_dynamic_index_buffer_mem(dataHandle, flags);
     }
 
     public ushort Handle => _dynamicIndexBufferHandle.idx;
 
-    public void Update(Span<TDataType> data, uint startIndex)
+    public void Update(TDataType[] data, uint startIndex)
     {
-        fixed (void* dataP = data)
-        {
-            var dataHandle = bgfx.make_ref(dataP, (uint)(sizeof(TDataType) * data.Length));
+        var dataHandle = MemoryUtils.Create(data);
 
-            bgfx.update_dynamic_index_buffer(_dynamicIndexBufferHandle, startIndex, dataHandle);
-        }
+        bgfx.update_dynamic_index_buffer(_dynamicIndexBufferHandle, startIndex, dataHandle);
     }
 
     private void ReleaseUnmanagedResources()

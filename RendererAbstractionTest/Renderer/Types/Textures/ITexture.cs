@@ -1,30 +1,26 @@
+using Bgfx;
+
 namespace RendererAbstractionTest.Renderer.Types.Textures;
 
 public interface ITexture : IDisposable
 {
-    ushort Handle { get; }
+    public ushort Handle { get; init; }
 
-    ushort Width { get; }
+    public bgfx.TextureFormat Format { get; init; }
+
+    public uint Size { get; init; }
+
+    public ushort Width { get; init; }
+
+    public ushort Height { get; init; }
     
-    ushort Height { get; }
+    public ushort Depth { get; init; }
 
-    ushort XOffset { get; }
+    public ushort Layers { get; init; }
 
-    ushort YOffset { get; }
+    public byte MipCount { get; init; }
 
-    ushort LayerCount { get; }
-    
-    ushort MipMapCount { get; }
+    public byte BitsPerPixel { get; init; }
 
-    uint Size { get; }
-
-    bool ReadOnly { get; }
-
-    void UpdateTexture()
-    {
-        if (ReadOnly)
-        {
-            throw new Exception("Texture not mutable!");
-        }
-    }
+    public bool ReadOnly { get; init; }
 }

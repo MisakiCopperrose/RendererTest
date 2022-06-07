@@ -18,7 +18,7 @@ public unsafe class Shader : IDisposable
 
     public ushort Handle => _shaderHandle.idx;
 
-    private string GetShaderPath()
+    private static string GetShaderPath()
     {
         switch (bgfx.get_renderer_type())
         {
@@ -39,9 +39,9 @@ public unsafe class Shader : IDisposable
             case bgfx.RendererType.OpenGLES:
                 return "shaders\\essl\\";
             case bgfx.RendererType.OpenGL:
-                return "shaders\\glsl\\";
+                return "shaders/glsl/";
             case bgfx.RendererType.Vulkan:
-                return "shaders\\spirv\\";
+                return "shaders/spirv/";
             case bgfx.RendererType.WebGPU:
                 break;
             case bgfx.RendererType.Noop:

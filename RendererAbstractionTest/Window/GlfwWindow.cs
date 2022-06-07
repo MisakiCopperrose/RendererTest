@@ -1,4 +1,3 @@
-using Silk.NET.Core;
 using Silk.NET.Core.Contexts;
 using Silk.NET.GLFW;
 

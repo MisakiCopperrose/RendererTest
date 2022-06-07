@@ -10,7 +10,7 @@ public unsafe class IndexBuffer<TDataType> : IBuffer
 
     public IndexBuffer(TDataType[] data, BufferFlags bufferFlags)
     {
-        var flags = (ushort) (IndexBufferUtils.IsInt32<TDataType>()
+        var flags = (ushort) (TypeUtils.IsInt32<TDataType>()
             ? (ushort) bufferFlags | (ushort) bgfx.BufferFlags.Index32
             : (ushort) bufferFlags);
 

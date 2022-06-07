@@ -18,7 +18,7 @@ public static class Backend
     {
         var array = new bgfx.RendererType[MaxNumberOfBackends];
 
-        int numOfBackends;
+        byte numOfBackends;
             
         fixed (bgfx.RendererType* pArray = array)
         {
