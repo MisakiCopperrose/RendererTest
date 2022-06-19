@@ -16,7 +16,7 @@ public interface ITexture : IDisposable
     
     public ushort Depth { get; init; }
 
-    public ushort Layers { get; init; }
+    public ushort LayerCount { get; init; }
 
     public byte MipCount { get; init; }
 

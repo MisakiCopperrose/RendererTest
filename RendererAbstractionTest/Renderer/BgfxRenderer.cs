@@ -6,6 +6,7 @@ using RendererAbstractionTest.Renderer.Types.Buffers;
 using RendererAbstractionTest.Renderer.Types.Buffers.Index;
 using RendererAbstractionTest.Renderer.Types.Buffers.Vertex;
 using RendererAbstractionTest.Renderer.Types.Shaders;
+using RendererAbstractionTest.Renderer.Types.Textures;
 using RendererAbstractionTest.Window;
 
 namespace RendererAbstractionTest.Renderer;
@@ -80,6 +81,8 @@ public unsafe class BgfxRenderer : IDisposable
             
             bgfx.set_view_clear(0, (ushort) (bgfx.ClearFlags.Color | bgfx.ClearFlags.Depth), 0x443355FF, 1, 0);
             bgfx.set_view_rect(0, 0, 0, (ushort) _window.Width, (ushort) _window.Height);
+            
+            var testTexture = Texture.CreateTexture2DFromFile("Textures/bark1.dds");
 
             var viewMatrix = Matrix4x4.CreateLookAt(new Vector3(0.0f, 0.0f, -5.0f), Vector3.Zero, Vector3.UnitY);
             var projMatrix = Matrix4x4.CreatePerspectiveFieldOfView(MathF.PI / 3f, (float) _window.Width / _window.Height, 0.1f, 100.0f);

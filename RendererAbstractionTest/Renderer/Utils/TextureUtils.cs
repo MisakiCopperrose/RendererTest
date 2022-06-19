@@ -1,8 +1,10 @@
+using System.Diagnostics;
+using Bgfx;
 using StbImageSharp;
 
 namespace RendererAbstractionTest.Renderer.Utils;
 
-public static class TextureUtils
+public static unsafe class TextureUtils
 {
     private static readonly string[] StbSupportedFileTypes =
     {
@@ -14,37 +16,79 @@ public static class TextureUtils
         ".dds", ".ktx", ".pvr"
     };
 
-    public static string CheckExtension(string filepath)
+    public enum ExtensionSupport
     {
-        var extension = Path.GetExtension(filepath);
-
-        return extension switch
-        {
-            null => throw new ArgumentNullException($"Filepath: {filepath} cannot be null!"),
-            "" => throw new Exception($"Filepath: {filepath} cannot be empty!"),
-            _ => extension
-        };
+        Native,
+        Stb,
+        Unsupported
     }
 
-    public static bool CheckForNativeSupport(string extension)
+    public static ExtensionSupport CheckForNativeSupport(string filePath)
     {
+        var extension = FileUtils.GetExtension(filePath);
+        
         if (NativelySupportedFileTypes.Contains(extension))
         {
-            return true;
+            return ExtensionSupport.Native;
         }
 
         if (StbSupportedFileTypes.Contains(extension))
         {
-            return false;
+            return ExtensionSupport.Stb;
         }
 
-        throw new Exception($"File extension: {extension} is not supported!");
+        Debug.WriteLine($"File extension {extension} of {Path.GetFileName(filePath)} is not supported!");
+
+        return ExtensionSupport.Unsupported;
     }
 
-    public static ImageResult ReadFileStb(string filepath)
+    public static void CreateNativeTexture(string filepath, out bgfx.TextureHandle textureHandle,
+        out bgfx.TextureInfo textureInfo)
     {
+        textureHandle = default;
+        textureInfo = new bgfx.TextureInfo();
+
         var data = File.ReadAllBytes(filepath);
+        var handle = MemoryUtils.Create(data);
+
+        fixed (bgfx.TextureInfo* textureInfoP = &textureInfo)
+        {
+            textureHandle = bgfx.create_texture(handle, (ulong)bgfx.TextureFlags.None, 0, textureInfoP);
+        }
+
+        Debug.Assert(textureHandle.Valid, $"{Path.GetFileName(filepath)} is corrupted or not supported!");
+    }
+
+    public static void CreateStbTexture(string filepath, bool hasMips, ushort layerCount,
+        out bgfx.TextureHandle textureHandle, out bgfx.TextureInfo textureInfo)
+    {
+        textureHandle = default;
+        textureInfo = new bgfx.TextureInfo();
         
-        return ImageResult.FromMemory(data);
+        ReadFileStb(filepath, out var imageResult, out var imageInfo);
+
+        if (imageResult is not null && imageInfo.HasValue)
+        {
+        }
+        
+        Debug.Assert(textureHandle.Valid, $"{Path.GetFileName(filepath)} is corrupted or not supported!");
+    }
+
+    public static void ReadFileStb(string filepath, out ImageResult? imageResult, out ImageInfo? imageInfo)
+    {
+        try
+        {
+            var stream = File.OpenRead(filepath);
+
+            imageResult = ImageResult.FromStream(stream);
+            imageInfo = ImageInfo.FromStream(stream);
+        }
+        catch (Exception e)
+        {
+            imageResult = default;
+            imageInfo = default;
+            
+            Debug.WriteLine(e);
+        }
     }
 }
