@@ -6,13 +6,14 @@ namespace RendererAbstractionTest.Window;
 public unsafe class GlfwWindow : IDisposable, IWindow
 {
     private readonly Glfw _glfw = Glfw.GetApi();
-    private readonly WindowHandle* _windowHandle;
+    
+    private WindowHandle* _windowHandle;
 
     public int Width { get; } = 1920;
 
     public int Height { get; } = 1080;
-    
-    public GlfwWindow()
+
+    public void Initialize()
     {
         _glfw.SetErrorCallback(ErrorCallback);
 

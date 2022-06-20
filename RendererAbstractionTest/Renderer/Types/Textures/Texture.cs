@@ -29,7 +29,7 @@ public static class Texture
 
         if (nativeExtension is TextureUtils.ExtensionSupport.Stb)
         {
-            TextureUtils.CreateStbTexture(filePath, hasMips, layerCount, out var textureHandle, out var textureInfo);
+            TextureUtils.CreateStbTexture(filePath, hasMips, layerCount, false, out var textureHandle, out var textureInfo);
             
             return new Texture2D
             {
@@ -51,27 +51,27 @@ public static class Texture
         return null;
     }
 
-    // public static Texture3D CreateTexture3DFromFile(string filePath)
-    // {
-    //     var extension = FileUtils.GetExtension(filePath);
-    //
-    //     TextureUtils.CheckForNativeSupport(extension);
-    //     TextureUtils.CreateNativeTexture(filePath, out var textureHandle, out var textureInfo);
-    //
-    //     return new Texture3D
-    //     {
-    //         Handle = textureHandle.idx,
-    //         Format = textureInfo->format,
-    //         Size = textureInfo->storageSize,
-    //         Width = textureInfo->width,
-    //         Depth = textureInfo->depth,
-    //         Height = textureInfo->height,
-    //         LayerCount = textureInfo->numLayers,
-    //         MipCount = textureInfo->numMips,
-    //         BitsPerPixel = textureInfo->bitsPerPixel,
-    //         ReadOnly = true
-    //     };
-    // }
+    public static Texture3D CreateTexture3DFromFile(string filePath)
+    {
+        var extension = FileUtils.GetExtension(filePath);
+    
+        TextureUtils.CheckForNativeSupport(extension);
+        TextureUtils.CreateNativeTexture(filePath, out var textureHandle, out var textureInfo);
+    
+        return new Texture3D
+        {
+            Handle = textureHandle.idx,
+            Format = textureInfo.format,
+            Size = textureInfo.storageSize,
+            Width = textureInfo.width,
+            Depth = textureInfo.depth,
+            Height = textureInfo.height,
+            LayerCount = textureInfo.numLayers,
+            MipCount = textureInfo.numMips,
+            BitsPerPixel = textureInfo.bitsPerPixel,
+            ReadOnly = true
+        };
+    }
     //
     // public static TextureCube CreateTextureCubeFromFIle()
     // {

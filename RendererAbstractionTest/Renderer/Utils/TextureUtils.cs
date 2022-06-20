@@ -6,6 +6,8 @@ namespace RendererAbstractionTest.Renderer.Utils;
 
 public static unsafe class TextureUtils
 {
+    private const int Texture2DDepth = 1;
+
     private static readonly string[] StbSupportedFileTypes =
     {
         ".png", ".jpg", ".bmp", ".tga", ".psd", ".gif", ".hdr"
@@ -26,7 +28,7 @@ public static unsafe class TextureUtils
     public static ExtensionSupport CheckForNativeSupport(string filePath)
     {
         var extension = FileUtils.GetExtension(filePath);
-        
+
         if (NativelySupportedFileTypes.Contains(extension))
         {
             return ExtensionSupport.Native;
@@ -59,35 +61,104 @@ public static unsafe class TextureUtils
         Debug.Assert(textureHandle.Valid, $"{Path.GetFileName(filepath)} is corrupted or not supported!");
     }
 
-    public static void CreateStbTexture(string filepath, bool hasMips, ushort layerCount,
+    public static void CreateStbTexture(string filepath, bool hasMips, ushort layerCount, bool cubeMap,
         out bgfx.TextureHandle textureHandle, out bgfx.TextureInfo textureInfo)
     {
         textureHandle = default;
-        textureInfo = new bgfx.TextureInfo();
-        
-        ReadFileStb(filepath, out var imageResult, out var imageInfo);
 
-        if (imageResult is not null && imageInfo.HasValue)
+        ReadImageStb(filepath, out var imageResult, out var imageInfo);
+
+        var format = GetStbFormat(imageResult, imageInfo);
+        var handle = MemoryUtils.Create(imageResult.Data);
+        var width = (ushort)imageResult.Width;
+        var height = (ushort)imageResult.Height;
+
+        Debug.Assert(
+            bgfx.is_texture_valid(
+                Texture2DDepth,
+                cubeMap,
+                layerCount,
+                format,
+                (ulong)bgfx.TextureFlags.None
+            ),
+            $"Texture: {Path.GetFileName(filepath)} cannot be valid!"
+        );
+
+        textureHandle = cubeMap switch
         {
+            false => bgfx.create_texture_2d(
+                width,
+                height,
+                hasMips,
+                layerCount,
+                format,
+                (ulong)bgfx.TextureFlags.None,
+                handle
+            ),
+            true => bgfx.create_texture_cube(
+                width,
+                hasMips,
+                layerCount,
+                format,
+                (ulong)bgfx.TextureFlags.None,
+                handle
+            )
+        };
+
+        fixed (bgfx.TextureInfo* textureInfoP = &textureInfo)
+        {
+            bgfx.calc_texture_size(
+                    textureInfoP,
+                    width,
+                    height,
+                    Texture2DDepth,
+                    cubeMap,
+                    hasMips,
+                    layerCount,
+                    format)
+                ;
         }
-        
-        Debug.Assert(textureHandle.Valid, $"{Path.GetFileName(filepath)} is corrupted or not supported!");
+
+        Debug.Assert(textureHandle.Valid, $"File: {Path.GetFileName(filepath)} is corrupted or not supported!");
     }
 
-    public static void ReadFileStb(string filepath, out ImageResult? imageResult, out ImageInfo? imageInfo)
+    private static bgfx.TextureFormat GetStbFormat(ImageResult imageResult, ImageInfo imageInfo)
+    {
+        return imageResult.Comp switch
+        {
+            ColorComponents.RedGreenBlueAlpha when imageInfo.BitsPerChannel == 4 => bgfx.TextureFormat.RGBA4,
+            ColorComponents.RedGreenBlueAlpha when imageInfo.BitsPerChannel == 8 => bgfx.TextureFormat.RGBA8,
+            ColorComponents.RedGreenBlueAlpha when imageInfo.BitsPerChannel == 16 => bgfx.TextureFormat.RGBA16,
+            ColorComponents.RedGreenBlue when imageInfo.BitsPerChannel == 8 => bgfx.TextureFormat.RGB8,
+            ColorComponents.Grey when imageInfo.BitsPerChannel == 1 => bgfx.TextureFormat.R1,
+            ColorComponents.Grey when imageInfo.BitsPerChannel == 8 => bgfx.TextureFormat.R8,
+            ColorComponents.Grey when imageInfo.BitsPerChannel == 16 => bgfx.TextureFormat.R16,
+            // Doesn't actually work, will turn to a red green image...
+            ColorComponents.GreyAlpha when imageInfo.BitsPerChannel == 8 => bgfx.TextureFormat.RG8,
+            // Doesn't actually work, will turn to a red green image...
+            ColorComponents.GreyAlpha when imageInfo.BitsPerChannel == 16 => bgfx.TextureFormat.RG16,
+            _ => bgfx.TextureFormat.Unknown
+        };
+    }
+
+    private static void ReadImageStb(string filepath, out ImageResult imageResult, out ImageInfo imageInfo)
     {
         try
         {
             var stream = File.OpenRead(filepath);
+            var imageInfoStream = ImageInfo.FromStream(stream);
+
+            Debug.Assert(imageInfoStream is not null,
+                $"File: {Path.GetFileName(filepath)} is corrupted or not supported!");
 
             imageResult = ImageResult.FromStream(stream);
-            imageInfo = ImageInfo.FromStream(stream);
+            imageInfo = imageInfoStream.Value;
         }
         catch (Exception e)
         {
-            imageResult = default;
+            imageResult = default!;
             imageInfo = default;
-            
+
             Debug.WriteLine(e);
         }
     }
