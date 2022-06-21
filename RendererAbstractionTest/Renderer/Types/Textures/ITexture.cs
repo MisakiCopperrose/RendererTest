@@ -23,4 +23,6 @@ public interface ITexture : IDisposable
     public byte BitsPerPixel { get; init; }
 
     public bool ReadOnly { get; init; }
+    
+    
 }
