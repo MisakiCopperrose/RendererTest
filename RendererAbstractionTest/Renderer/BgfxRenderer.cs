@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Numerics;
 using Bgfx;
 using RendererAbstractionTest.Renderer.Meshes;
@@ -7,6 +8,7 @@ using RendererAbstractionTest.Renderer.Types.Buffers.Index;
 using RendererAbstractionTest.Renderer.Types.Buffers.Vertex;
 using RendererAbstractionTest.Renderer.Types.Shaders;
 using RendererAbstractionTest.Renderer.Types.Textures;
+using RendererAbstractionTest.Renderer.Types.Views;
 using RendererAbstractionTest.Window;
 
 namespace RendererAbstractionTest.Renderer;
@@ -58,6 +60,7 @@ public unsafe class BgfxRenderer : IDisposable
         var fragmentShader = new Shader("fs_cubes");
         var shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
         var testTexture = Texture.CreateTexture2DFromFile("Textures/texture.png");
+        var viewPass = new ViewPass("Test", Color.Purple);
 
         bgfx.reset(
             (uint)_window.Width,
@@ -73,18 +76,12 @@ public unsafe class BgfxRenderer : IDisposable
         while (!_window.WindowShouldClose)
         {
             counter++;
+            
+            viewPass.ViewRectangle = new Rectangle(0, 0, _window.Width, _window.Height);
+            viewPass.ViewMatrix = Matrix4x4.CreateLookAt(new Vector3(0.0f, 0.0f, -5.0f), Vector3.Zero, Vector3.UnitY);
+            viewPass.ProjectionMatrix = Matrix4x4.CreatePerspectiveFieldOfView(MathF.PI / 3f, (float)_window.Width / _window.Height, 0.1f, 100.0f);
 
-            bgfx.set_view_clear(0, (ushort)(bgfx.ClearFlags.Color | bgfx.ClearFlags.Depth), 0x443355FF, 1, 0);
-            bgfx.set_view_rect(0, 0, 0, (ushort)_window.Width, (ushort)_window.Height);
-
-            var viewMatrix = Matrix4x4.CreateLookAt(new Vector3(0.0f, 0.0f, -5.0f), Vector3.Zero, Vector3.UnitY);
-            var projMatrix =
-                Matrix4x4.CreatePerspectiveFieldOfView(MathF.PI / 3f, (float)_window.Width / _window.Height, 0.1f,
-                    100.0f);
-
-            bgfx.set_view_transform(0, &viewMatrix, &projMatrix);
-
-            bgfx.touch(0);
+            bgfx.touch(viewPass.Id);
 
             var rX = Matrix4x4.CreateRotationX(SineWave(counter));
             var rY = Matrix4x4.CreateRotationY(SineWave(counter));
