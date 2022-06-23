@@ -1,34 +1,27 @@
-using System.Drawing;
 using Bgfx;
-using RendererAbstractionTest.Renderer.Enums;
+using RendererAbstractionTest.Window;
 
 namespace RendererAbstractionTest.Renderer.Types.Buffers.Frame;
 
-public class FrameBuffer
+public unsafe class WindowFrameBuffer : IDisposable
 {
     private readonly bgfx.FrameBufferHandle _frameBufferHandle;
 
     private string _name = string.Empty;
 
-    public FrameBuffer(Size size)
+    public WindowFrameBuffer(IWindow window)
     {
-        _frameBufferHandle = bgfx.create_frame_buffer(
-            (ushort)size.Width,
-            (ushort)size.Height,
-            bgfx.TextureFormat.RGBA8,
-            (ulong)(bgfx.SamplerFlags.UClamp | bgfx.SamplerFlags.UClamp)
+        _frameBufferHandle = bgfx.create_frame_buffer_from_nwh(
+            window.NativeWindowHandle(),
+            (ushort)window.Width,
+            (ushort)window.Height,
+            bgfx.TextureFormat.Count,
+            bgfx.TextureFormat.Count
         );
-    }
 
-    public FrameBuffer(BackBufferRatios backBufferRatio)
-    {
-        _frameBufferHandle = bgfx.create_frame_buffer_scaled(
-            (bgfx.BackbufferRatio)backBufferRatio,
-            bgfx.TextureFormat.RGBA8,
-            (ulong)(bgfx.SamplerFlags.UClamp | bgfx.SamplerFlags.UClamp)
-        );
+        Window = window;
     }
-
+    
     public string Name
     {
         get => _name;
@@ -42,6 +35,8 @@ public class FrameBuffer
 
     public ushort Handle => _frameBufferHandle.idx;
 
+    public IWindow Window { get; }
+
     private void ReleaseUnmanagedResources()
     {
         bgfx.destroy_frame_buffer(_frameBufferHandle);
@@ -53,7 +48,7 @@ public class FrameBuffer
         GC.SuppressFinalize(this);
     }
 
-    ~FrameBuffer()
+    ~WindowFrameBuffer()
     {
         ReleaseUnmanagedResources();
     }

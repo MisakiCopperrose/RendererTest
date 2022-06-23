@@ -46,6 +46,11 @@ public unsafe class GlfwWindow : IDisposable, IWindow
         _glfw.SetWindowShouldClose(_windowHandle, true);
     }
 
+    public void* NativeWindowHandle()
+    {
+        return NativeWindowHandle(out var unused);
+    }
+
     public void* NativeWindowHandle(out void* display)
     {
         var nativeWindow = new GlfwNativeWindow(_glfw, _windowHandle);

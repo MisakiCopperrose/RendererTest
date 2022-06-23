@@ -9,7 +9,7 @@ namespace RendererAbstractionTest.Renderer.Types.Views;
 
 public unsafe class ViewPass : IDisposable
 {
-    private string _name;
+    private string _name = string.Empty;
     private Rectangle _viewRectangle;
     private Rectangle _scissorRectangle;
     private Color _clearColor;
@@ -19,40 +19,14 @@ public unsafe class ViewPass : IDisposable
     private FrameBuffer _viewPassFrameBuffer;
     private Matrix4x4 _viewMatrix;
     private Matrix4x4 _projectionMatrix;
+    
+    public ushort Id { get; init; }
 
     public ViewPass()
     {
-        Name = Id.ToString();
         ClearColor = Color.Purple;
         ClearDepth = 1f;
-        ClearStencil = 0;
     }
-    
-    public ViewPass(string name)
-    {
-        Name = name;
-        ClearColor = Color.Purple;
-        ClearDepth = 1f;
-        ClearStencil = 0;
-    }
-    
-    public ViewPass(string name, Color clearColor)
-    {
-        Name = name;
-        ClearColor = clearColor;
-        ClearDepth = 1f;
-        ClearStencil = 0;
-    }
-    
-    public ViewPass(Color clearColor)
-    {
-        Name = Id.ToString();
-        ClearColor = clearColor;
-        ClearDepth = 1f;
-        ClearStencil = 0;
-    }
-
-    public ushort Id { get; init; }
 
     public string Name
     {
@@ -105,18 +79,16 @@ public unsafe class ViewPass : IDisposable
     }
 
     public void SetViewRectangleBackBufferRatio(Point origin, BackBufferRatios bufferRatio)
-    {
-        throw new NotImplementedException();
+    { 
+        bgfx.set_view_rect_ratio(Id, (ushort)origin.X, (ushort)origin.Y, (bgfx.BackbufferRatio)bufferRatio);
         
-        // bgfx.set_view_rect_ratio(_id, (ushort)origin.X, (ushort)origin.Y, (bgfx.BackbufferRatio)bufferRatio);
-        //
-        // _viewRectangle = new Rectangle
-        // {
-        //     X = origin.X,
-        //     Y = origin.Y,
-        //     // Height = backbuffer / ratio
-        //     // Width = backbuffer / ratio
-        // };
+        _viewRectangle = new Rectangle
+        {
+            X = origin.X,
+            Y = origin.Y,
+            // Height = backbuffer.width / ratio
+            // Width = backbuffer.height / ratio
+        };
     }
 
     public Rectangle ScissorRectangle
@@ -181,11 +153,15 @@ public unsafe class ViewPass : IDisposable
         }
     }
 
-    // TODO: implement framebuffer
     public FrameBuffer ViewPassFrameBuffer
     {
         get => _viewPassFrameBuffer;
-        set => _viewPassFrameBuffer = value;
+        set
+        {
+            bgfx.set_view_frame_buffer(Id, new bgfx.FrameBufferHandle{idx = value.Handle});
+
+            _viewPassFrameBuffer = value;
+        }
     }
 
     public void Reset()

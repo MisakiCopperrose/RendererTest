@@ -11,4 +11,6 @@ public unsafe interface IWindow
     void PollEvents();
 
     void* NativeWindowHandle(out void* display);
+    
+    void* NativeWindowHandle();
 }

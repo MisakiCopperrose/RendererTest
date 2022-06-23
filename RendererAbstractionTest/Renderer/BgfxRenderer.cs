@@ -41,7 +41,7 @@ public unsafe class BgfxRenderer : IDisposable
         init.type = bgfx.RendererType.Count;
         init.resolution = new bgfx.Resolution
         {
-            format = bgfx.TextureFormat.RGBA8, // Format needed for d3d11/12 backend
+            format = bgfx.TextureFormat.RGBA16, // RGBA8 format needed for d3d11/12 backend
             width = (uint)_window.Width,
             height = (uint)_window.Height,
             reset = (uint)bgfx.ResetFlags.Vsync | (uint)bgfx.ResetFlags.FlushAfterRender
@@ -54,13 +54,12 @@ public unsafe class BgfxRenderer : IDisposable
             PosColor.VertexLayoutBuffer,
             BufferFlags.None
         );
-
         var indexBuffer = new IndexBuffer<ushort>(CubeBgfx.Indices, BufferFlags.None);
         var vertexShader = new Shader("vs_cubes");
         var fragmentShader = new Shader("fs_cubes");
         var shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
         var testTexture = Texture.CreateTexture2DFromFile("Textures/texture.png");
-        var viewPass = new ViewPass("Test", Color.Purple);
+        var viewPass = new ViewPass();
 
         bgfx.reset(
             (uint)_window.Width,
@@ -76,10 +75,11 @@ public unsafe class BgfxRenderer : IDisposable
         while (!_window.WindowShouldClose)
         {
             counter++;
-            
+
             viewPass.ViewRectangle = new Rectangle(0, 0, _window.Width, _window.Height);
             viewPass.ViewMatrix = Matrix4x4.CreateLookAt(new Vector3(0.0f, 0.0f, -5.0f), Vector3.Zero, Vector3.UnitY);
-            viewPass.ProjectionMatrix = Matrix4x4.CreatePerspectiveFieldOfView(MathF.PI / 3f, (float)_window.Width / _window.Height, 0.1f, 100.0f);
+            viewPass.ProjectionMatrix = Matrix4x4.CreatePerspectiveFieldOfView(MathF.PI / 3f,
+                (float)_window.Width / _window.Height, 0.1f, 100.0f);
 
             bgfx.touch(viewPass.Id);
 
