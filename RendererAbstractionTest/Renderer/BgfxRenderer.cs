@@ -19,6 +19,8 @@ public unsafe class BgfxRenderer : IDisposable
 
     public BgfxRenderer(IWindow window)
     {
+        BgfxNative.SetBgfx();
+        
         _window = window;
     }
 

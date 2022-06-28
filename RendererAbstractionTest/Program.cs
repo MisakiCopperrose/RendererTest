@@ -1,4 +1,5 @@
-﻿using RendererAbstractionTest.Renderer;
+﻿using Bgfx;
+using RendererAbstractionTest.Renderer;
 using RendererAbstractionTest.Window;
 
 var factory = new TaskFactory();
