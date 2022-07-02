@@ -12,10 +12,10 @@ public unsafe class ShaderUniform
     public ShaderUniform(string name, UniformType type, ushort elementCount = 1)
     {
         Handle = bgfx.create_uniform(name, (bgfx.UniformType)type, elementCount);
-        
+
         // TODO: log debug assert of handle
         var info = new bgfx.UniformInfo();
-        
+
         bgfx.get_uniform_info(Handle, &info);
 
         Info = info;

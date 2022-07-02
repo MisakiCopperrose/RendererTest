@@ -8,12 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Bgfx\Bgfx.csproj" />
-      <ProjectReference Include="..\Renderer\Renderer.csproj" />
+        <ProjectReference Include="..\Bgfx\Bgfx.csproj"/>
+        <ProjectReference Include="..\Renderer\Renderer.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Buffer\Index" />
+        <Folder Include="Buffer\Index"/>
     </ItemGroup>
 
 </Project>

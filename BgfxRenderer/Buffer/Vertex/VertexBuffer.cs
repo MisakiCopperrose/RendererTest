@@ -1,7 +1,7 @@
 using Bgfx;
 using BgfxRenderer.Buffer.Vertex.Layout;
-using BgfxRenderer.Utils;
 using BgfxRenderer.Enums;
+using BgfxRenderer.Utils;
 
 namespace BgfxRenderer.Buffer.Vertex;
 

@@ -4,10 +4,6 @@ namespace BgfxRenderer.Buffer.Vertex.Layout;
 
 public unsafe class VertexLayout : IDisposable
 {
-    public bgfx.VertexLayoutHandle Handle { get; }
-
-    public bgfx.VertexLayout Buffer { get; set; }
-
     public VertexLayout()
     {
         var layout = new bgfx.VertexLayout();
@@ -16,15 +12,19 @@ public unsafe class VertexLayout : IDisposable
         Buffer = layout;
     }
 
-    private void ReleaseUnmanagedResources()
-    {
-        bgfx.destroy_vertex_layout(Handle);
-    }
+    public bgfx.VertexLayoutHandle Handle { get; }
+
+    public bgfx.VertexLayout Buffer { get; set; }
 
     public void Dispose()
     {
         ReleaseUnmanagedResources();
         GC.SuppressFinalize(this);
+    }
+
+    private void ReleaseUnmanagedResources()
+    {
+        bgfx.destroy_vertex_layout(Handle);
     }
 
     ~VertexLayout()

@@ -5,7 +5,7 @@ public static class FileUtils
     public static bool TryReadFile(string filepath, out byte[] fileData)
     {
         fileData = Array.Empty<byte>();
-        
+
         try
         {
             fileData = File.ReadAllBytes(filepath);

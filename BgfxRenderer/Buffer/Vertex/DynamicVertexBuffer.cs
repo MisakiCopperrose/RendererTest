@@ -36,7 +36,7 @@ public unsafe class DynamicVertexBuffer<TDataType> : IDisposable
     public void Update(uint startVertex, TDataType[] data)
     {
         var handle = MemoryUtils.GetMemoryPointer(data);
-        
+
         bgfx.update_dynamic_vertex_buffer(Handle, startVertex, handle);
     }
 

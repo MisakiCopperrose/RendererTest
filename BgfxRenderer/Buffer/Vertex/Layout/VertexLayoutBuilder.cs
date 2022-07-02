@@ -34,7 +34,7 @@ public static unsafe class VertexLayoutBuilder
 
         return vertexLayout;
     }
-    
+
     public static VertexLayout AddShortAttribute(this VertexLayout vertexLayout, VertexAttributes vertexAttribute,
         VertexAttributeLengths vertexAttributeLength, bool normalised = false, bool asInt = false)
     {
@@ -53,7 +53,7 @@ public static unsafe class VertexLayoutBuilder
 
         return vertexLayout;
     }
-    
+
     public static VertexLayout AddHalfAttribute(this VertexLayout vertexLayout, VertexAttributes vertexAttribute,
         VertexAttributeLengths vertexAttributeLength)
     {

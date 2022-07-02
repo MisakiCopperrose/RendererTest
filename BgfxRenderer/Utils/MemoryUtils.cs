@@ -9,8 +9,8 @@ public static unsafe class MemoryUtils
     {
         return bgfx.copy(data.ToPointer(), size);
     }
-    
-    public static bgfx.Memory* GetMemoryPointer<T>(T[] data) 
+
+    public static bgfx.Memory* GetMemoryPointer<T>(T[] data)
         where T : unmanaged
     {
         if (data is null || !data.Any())
@@ -20,7 +20,7 @@ public static unsafe class MemoryUtils
         var ptr = GetMemoryPointer(gcHandle.AddrOfPinnedObject(), (uint)(Marshal.SizeOf<T>() * data.Length));
 
         gcHandle.Free();
-        
+
         return ptr;
     }
 }

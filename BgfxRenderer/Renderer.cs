@@ -12,9 +12,9 @@ public static class Renderer
     public static void Run()
     {
         // TODO: init bgfx backend
-        
+
         // TODO: run render loop
-        
+
         bgfx.shutdown();
     }
 }
