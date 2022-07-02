@@ -1,6 +1,5 @@
-﻿using Bgfx;
-using RendererAbstractionTest.Renderer;
-using RendererAbstractionTest.Window;
+﻿using Renderer;
+using Windowing;
 
 var factory = new TaskFactory();
 var window = new GlfwWindow();

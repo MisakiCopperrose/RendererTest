@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 
 namespace Bgfx
 {
-public sealed partial class bgfx
+public static partial class bgfx
 {
 	[Flags]
 	public enum StateFlags : ulong
