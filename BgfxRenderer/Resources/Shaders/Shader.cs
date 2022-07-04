@@ -1,7 +1,7 @@
 using Bgfx;
 using BgfxRenderer.Utils;
 
-namespace BgfxRenderer.Shaders;
+namespace BgfxRenderer.Resources.Shaders;
 
 public unsafe class Shader : IDisposable
 {

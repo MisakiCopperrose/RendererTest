@@ -13,9 +13,9 @@ public unsafe class VertexBuffer<TDataType> : IDisposable
     public VertexBuffer(TDataType[] data, VertexLayout vertexLayout, BufferFlags bufferFlag)
     {
         var layout = vertexLayout.Buffer;
-        var handle = MemoryUtils.GetMemoryPointer(data);
+        var memoryPointer = MemoryUtils.GetMemoryPointer(data);
 
-        Handle = bgfx.create_vertex_buffer(handle, &layout, (ushort)bufferFlag);
+        Handle = bgfx.create_vertex_buffer(memoryPointer, &layout, (ushort)bufferFlag);
     }
 
     public bgfx.VertexBufferHandle Handle { get; }

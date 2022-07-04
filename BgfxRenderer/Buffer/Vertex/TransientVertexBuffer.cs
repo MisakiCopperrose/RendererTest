@@ -11,11 +11,11 @@ public unsafe class TransientVertexBuffer<TDataType>
     {
         var layout = vertexLayout.Buffer;
         var buffer = new bgfx.TransientVertexBuffer();
-        var handle = MemoryUtils.GetMemoryPointer(data);
+        var memoryPointer = MemoryUtils.GetMemoryPointer(data);
 
         bgfx.alloc_transient_vertex_buffer(&buffer, (uint)data.Length, &layout);
 
-        buffer.data = handle->data;
+        buffer.data = memoryPointer->data;
 
         Buffer = buffer;
     }

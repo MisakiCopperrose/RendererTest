@@ -1,7 +1,7 @@
 using Bgfx;
 using BgfxRenderer.Enums;
 
-namespace BgfxRenderer.Shaders;
+namespace BgfxRenderer.Resources.Shaders;
 
 public static unsafe class ShaderUtils
 {

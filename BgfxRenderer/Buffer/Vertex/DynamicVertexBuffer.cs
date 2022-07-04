@@ -8,19 +8,27 @@ namespace BgfxRenderer.Buffer.Vertex;
 public unsafe class DynamicVertexBuffer<TDataType> : IDisposable
     where TDataType : unmanaged
 {
-    public DynamicVertexBuffer(uint vertexCount, VertexLayout vertexLayout, BufferFlags bufferFlags = BufferFlags.None)
+    public DynamicVertexBuffer(uint vertexCount, VertexLayout vertexLayout, bool resizeable,
+        BufferFlags bufferFlags = BufferFlags.None)
     {
         var layout = vertexLayout.Buffer;
+        var flags = (ushort)(resizeable
+            ? (ushort)bufferFlags | (ushort)bgfx.BufferFlags.AllowResize
+            : (ushort)bufferFlags);
 
-        Handle = bgfx.create_dynamic_vertex_buffer(vertexCount, &layout, (ushort)bufferFlags);
+        Handle = bgfx.create_dynamic_vertex_buffer(vertexCount, &layout, flags);
     }
 
-    public DynamicVertexBuffer(TDataType[] data, VertexLayout vertexLayout, BufferFlags bufferFlags = BufferFlags.None)
+    public DynamicVertexBuffer(TDataType[] data, VertexLayout vertexLayout, bool resizeable,
+        BufferFlags bufferFlags = BufferFlags.None)
     {
         var layout = vertexLayout.Buffer;
         var handle = MemoryUtils.GetMemoryPointer(data);
+        var flags = (ushort)(resizeable
+            ? (ushort)bufferFlags | (ushort)bgfx.BufferFlags.AllowResize
+            : (ushort)bufferFlags);
 
-        Handle = bgfx.create_dynamic_vertex_buffer_mem(handle, &layout, (ushort)bufferFlags);
+        Handle = bgfx.create_dynamic_vertex_buffer_mem(handle, &layout, flags);
     }
 
     public bgfx.DynamicVertexBufferHandle Handle { get; }
@@ -35,9 +43,9 @@ public unsafe class DynamicVertexBuffer<TDataType> : IDisposable
 
     public void Update(uint startVertex, TDataType[] data)
     {
-        var handle = MemoryUtils.GetMemoryPointer(data);
+        var memoryPointer = MemoryUtils.GetMemoryPointer(data);
 
-        bgfx.update_dynamic_vertex_buffer(Handle, startVertex, handle);
+        bgfx.update_dynamic_vertex_buffer(Handle, startVertex, memoryPointer);
     }
 
     private void ReleaseUnmanagedResources()

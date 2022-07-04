@@ -1,6 +1,6 @@
 using Bgfx;
 
-namespace BgfxRenderer.Shaders;
+namespace BgfxRenderer.Resources.Shaders;
 
 public class ShaderProgram
 {
