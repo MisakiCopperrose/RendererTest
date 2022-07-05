@@ -7,6 +7,8 @@ namespace BgfxRenderer.Resources.Textures;
 
 public unsafe class TextureCube : ITexture
 {
+    private string _name = string.Empty;
+
     public TextureCube(ushort textureSize, ushort layerCount, bool hasMips, TextureFormat textureFormat,
         TextureFlags textureFlags)
     {
@@ -92,7 +94,16 @@ public unsafe class TextureCube : ITexture
 
     public bgfx.TextureHandle Handle { get; }
 
-    public string Name { get; set; } = string.Empty;
+    public string Name
+    {
+        get => _name;
+        set
+        {
+            bgfx.set_texture_name(Handle, value, value.Length);
+            
+            _name = value;
+        }
+    }
 
     public Size TextureSize { get; private set; }
 
