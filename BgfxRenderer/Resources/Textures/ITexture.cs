@@ -8,11 +8,11 @@ public interface ITexture : IDisposable
 {
     bgfx.TextureHandle Handle { get; }
 
+    string Name { get; set; }
+
     Size TextureSize { get; }
 
     Point TextureOffset { get; }
-
-    ushort LayerCount { get; }
 
     bool MipMaps { get; }
 

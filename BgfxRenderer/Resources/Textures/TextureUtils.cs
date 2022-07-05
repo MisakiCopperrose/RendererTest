@@ -13,7 +13,7 @@ public static unsafe class TextureUtils
     {
         ".png", ".jpg", ".bmp", ".tga", ".psd", ".gif", ".hdr"
     };
-
+ 
     private static readonly string[] NativelySupportedFileTypes =
     {
         ".dds", ".ktx", ".pvr"
@@ -52,7 +52,7 @@ public static unsafe class TextureUtils
 
         if (NativelySupportedFileTypes.Contains(extension) && 
             TryGetNativeTextureFile(path, textureFlags, out var textureHandle, out var textureInfo))
-            return new Texture3D(/*textureHandle, textureInfo, textureFlags*/);
+            return new Texture3D(textureHandle, textureInfo, textureFlags);
 
         return GetDefaultTexture3D();
     }
@@ -66,7 +66,7 @@ public static unsafe class TextureUtils
 
         if (NativelySupportedFileTypes.Contains(extension) && 
             TryGetNativeTextureFile(path, textureFlags, out var textureHandle, out var textureInfo))
-            return new TextureCube(/*textureHandle, textureInfo, textureFlags*/);
+            return new TextureCube(textureHandle, textureInfo, textureFlags);
 
         if (!StbSupportedFileTypes.Contains(extension)) 
             return GetDefaultTextureCube();
@@ -76,8 +76,8 @@ public static unsafe class TextureUtils
 
         var textureFormat = GetStbTextureFormat(imageResult.Comp, bitsPerChannel);
 
-        return new TextureCube(/* imageResult.Data, new Size(imageResult.Width, imageResult.Height), 1,
-            false, textureFormat, textureFlags*/);
+        return new TextureCube(imageResult.Data, (ushort)imageResult.Height, 1,
+            false, textureFormat, textureFlags);
     }
 
     private static bool TryGetNativeTextureFile(string filepath, TextureFlags textureFlags,
@@ -108,7 +108,9 @@ public static unsafe class TextureUtils
 
         imageResult = ImageResult.FromMemory(data);
 
-        var stream = File.OpenRead(filepath);
+        if (!FileUtils.TryOpenReadFile(filepath, out var stream))
+            return false;
+        
         var imageInfoBool = ImageInfo.FromStream(stream);
 
         if (!imageInfoBool.HasValue)
@@ -138,7 +140,7 @@ public static unsafe class TextureUtils
             _ => TextureFormat.Unknown
         };
     }
-
+    
     public static Texture2D GetDefaultTexture2D()
     {
         throw new NotImplementedException();

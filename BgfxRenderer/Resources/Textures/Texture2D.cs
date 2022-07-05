@@ -32,6 +32,23 @@ public unsafe class Texture2D : ITexture
         ReadOnly = false;
     }
 
+    public Texture2D(BackbufferRatio backbufferRatio, ushort layerCount, bool hasMips, TextureFormat textureFormat,
+        TextureFlags textureFlags)
+    {
+        Handle = bgfx.create_texture_2d_scaled(
+            (bgfx.BackbufferRatio)backbufferRatio,
+            hasMips,
+            layerCount,
+            (bgfx.TextureFormat)textureFormat,
+            (ulong)textureFlags
+        );
+        
+        LayerCount = layerCount;
+        MipMaps = hasMips;
+        TextureFormat = textureFormat;
+        TextureFlags = textureFlags;
+    }
+
     public Texture2D(byte[] data, Size textureSize, ushort layerCount, bool hasMips, TextureFormat textureFormat,
         TextureFlags textureFlags)
     {
@@ -59,12 +76,12 @@ public unsafe class Texture2D : ITexture
         ReadOnly = true;
     }
 
-    public Texture2D(void* data, uint size, Size textureSize, ushort layerCount, bool hasMips,
+    public Texture2D(void* data, uint dataSize, Size textureSize, ushort layerCount, bool hasMips,
         TextureFormat textureFormat, TextureFlags textureFlags)
     {
         // TODO: log assertion of bgfx.is_texture_valid();
 
-        var memoryPointer = bgfx.make_ref(data, size);
+        var memoryPointer = bgfx.make_ref(data, dataSize);
 
         Handle = bgfx.create_texture_2d(
             (ushort)textureSize.Width,
@@ -115,9 +132,43 @@ public unsafe class Texture2D : ITexture
 
     public bool ReadOnly { get; }
 
-    public void Update(ushort layer, byte mipLevel, Point offset, Size size, byte[] data)
+    public void Update(byte[] data, ushort layer, byte mipLevel, Point offset, Size size)
     {
+        if (ReadOnly)
+        {
+            // TODO: log error
+            return;
+        }
+
         var memoryPointer = MemoryUtils.GetMemoryPointer(data);
+
+        bgfx.update_texture_2d(
+            Handle,
+            layer,
+            mipLevel,
+            (ushort)offset.X,
+            (ushort)offset.Y,
+            (ushort)size.Width,
+            (ushort)size.Height,
+            memoryPointer,
+            ushort.MaxValue
+        );
+
+        // TODO: log valid assertion
+
+        TextureOffset = offset;
+        TextureSize = size;
+    }
+
+    public void Update(void* data, uint dataSize, ushort layer, byte mipLevel, Point offset, Size size)
+    {
+        if (ReadOnly)
+        {
+            // TODO: log error
+            return;
+        }
+
+        var memoryPointer = bgfx.make_ref(data, dataSize);
 
         bgfx.update_texture_2d(
             Handle,
