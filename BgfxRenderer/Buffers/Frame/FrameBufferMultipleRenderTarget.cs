@@ -1,7 +1,7 @@
 using Bgfx;
 using BgfxRenderer.Resources.Textures;
 
-namespace BgfxRenderer.Buffer.Frame;
+namespace BgfxRenderer.Buffers.Frame;
 
 public unsafe class FrameBufferMultipleRenderTarget : IFrameBuffer
 {

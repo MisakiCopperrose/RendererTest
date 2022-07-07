@@ -2,7 +2,7 @@ using System.Drawing;
 using Bgfx;
 using BgfxRenderer.Enums;
 
-namespace BgfxRenderer.Buffer.Frame;
+namespace BgfxRenderer.Buffers.Frame;
 
 public class FrameBuffer : IFrameBuffer
 {

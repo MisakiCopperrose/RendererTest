@@ -1,7 +1,7 @@
 using Bgfx;
 using Windowing;
 
-namespace BgfxRenderer.Buffer.Frame;
+namespace BgfxRenderer.Buffers.Frame;
 
 public unsafe class FrameBufferWindowed : IFrameBuffer
 {

@@ -1,9 +1,9 @@
 using Bgfx;
 using BgfxRenderer.Utils;
 
-namespace BgfxRenderer.Buffer.Index;
+namespace BgfxRenderer.Buffers.Index;
 
-public unsafe class TransientIndexBuffer<TDataType>
+public unsafe struct TransientIndexBuffer<TDataType>
     where TDataType : unmanaged
 {
     public TransientIndexBuffer(TDataType[] data)

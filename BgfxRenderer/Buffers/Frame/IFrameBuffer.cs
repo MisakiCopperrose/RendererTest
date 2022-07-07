@@ -1,6 +1,6 @@
 using Bgfx;
 
-namespace BgfxRenderer.Buffer.Frame;
+namespace BgfxRenderer.Buffers.Frame;
 
 public interface IFrameBuffer : IDisposable
 {

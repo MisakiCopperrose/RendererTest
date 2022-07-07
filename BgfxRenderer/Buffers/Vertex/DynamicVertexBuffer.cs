@@ -1,9 +1,9 @@
 using Bgfx;
-using BgfxRenderer.Buffer.Vertex.Layout;
+using BgfxRenderer.Buffers.Vertex.Layout;
 using BgfxRenderer.Enums;
 using BgfxRenderer.Utils;
 
-namespace BgfxRenderer.Buffer.Vertex;
+namespace BgfxRenderer.Buffers.Vertex;
 
 public unsafe class DynamicVertexBuffer<TDataType> : IDisposable
     where TDataType : unmanaged

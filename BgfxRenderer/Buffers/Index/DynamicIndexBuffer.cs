@@ -2,7 +2,7 @@ using Bgfx;
 using BgfxRenderer.Enums;
 using BgfxRenderer.Utils;
 
-namespace BgfxRenderer.Buffer.Index;
+namespace BgfxRenderer.Buffers.Index;
 
 public unsafe class DynamicIndexBuffer<TDataType> : IDisposable
     where TDataType: unmanaged

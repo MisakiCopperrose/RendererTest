@@ -1,10 +1,10 @@
 using Bgfx;
-using BgfxRenderer.Buffer.Vertex.Layout;
+using BgfxRenderer.Buffers.Vertex.Layout;
 using BgfxRenderer.Utils;
 
-namespace BgfxRenderer.Buffer.Vertex;
+namespace BgfxRenderer.Buffers.Vertex;
 
-public unsafe class TransientVertexBuffer<TDataType>
+public unsafe struct TransientVertexBuffer<TDataType>
     where TDataType : unmanaged
 {
     public TransientVertexBuffer(TDataType[] data, VertexLayout vertexLayout)

@@ -1,7 +1,7 @@
 using Bgfx;
 using BgfxRenderer.Enums;
 
-namespace BgfxRenderer.Buffer.Vertex.Layout;
+namespace BgfxRenderer.Buffers.Vertex.Layout;
 
 public static unsafe class VertexLayoutUtils
 {

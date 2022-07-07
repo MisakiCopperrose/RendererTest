@@ -1,6 +1,6 @@
 using Bgfx;
 
-namespace BgfxRenderer.Buffer.Vertex.Layout;
+namespace BgfxRenderer.Buffers.Vertex.Layout;
 
 public unsafe class VertexLayout : IDisposable
 {
