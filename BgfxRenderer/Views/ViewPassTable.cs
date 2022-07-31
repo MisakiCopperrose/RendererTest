@@ -20,7 +20,7 @@ public struct ViewPassTable : IEnumerable<ViewPass>
 
     public bool TryRemovePass(ushort id)
     {
-        
+        throw new NotImplementedException();
     }
 
     public bool TryRemovePass(string name)
@@ -30,7 +30,7 @@ public struct ViewPassTable : IEnumerable<ViewPass>
 
     public void Reorder()
     {
-        
+        throw new NotImplementedException();
     }
 
     public void Clear()

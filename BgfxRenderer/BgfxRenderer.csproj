@@ -9,6 +9,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Bgfx\Bgfx.csproj" />
+        <ProjectReference Include="..\Maths\Maths.csproj" />
         <ProjectReference Include="..\Renderer\Renderer.csproj" />
     </ItemGroup>
 
