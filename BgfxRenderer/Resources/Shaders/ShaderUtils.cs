@@ -9,20 +9,18 @@ public static unsafe class ShaderUtils
 
     public static string GetShaderPath()
     {
-        var folder = RuntimeData.CurrentConfigData.ShaderFolderPath;
-
         switch (RuntimeData.CurrentBackend)
         {
             case SupportedApis.Vulkan:
-                return $"{folder}\\Vulkan";
+                return $"{RuntimeData.ShaderFolder}\\Vulkan";
             case SupportedApis.Metal:
-                return $"{folder}\\Metal";
+                return $"{RuntimeData.ShaderFolder}\\Metal";
             case SupportedApis.D3D9:
-                return $"{folder}\\D3D9";
+                return $"{RuntimeData.ShaderFolder}\\D3D9";
             case SupportedApis.D3D12:
-                return $"{folder}\\D3D12";
+                return $"{RuntimeData.ShaderFolder}\\D3D12";
             case SupportedApis.OpenGl:
-                return $"{folder}\\OpenGL";
+                return $"{RuntimeData.ShaderFolder}\\OpenGL";
             case SupportedApis.NotSupported:
             default:
                 throw new ArgumentOutOfRangeException();

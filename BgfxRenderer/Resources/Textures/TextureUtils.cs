@@ -9,31 +9,18 @@ namespace BgfxRenderer.Resources.Textures;
 // TODO: maybe add image-sharp as first choice and stb as fallback?
 public static unsafe class TextureUtils
 {
-    private static readonly string[] StbSupportedFileTypes =
+    public static Texture2D GetTexture2DFromFile(string path, TextureFlags textureFlags)
     {
-        ".png", ".jpg", ".bmp", ".tga", ".psd", ".gif", ".hdr"
-    };
- 
-    private static readonly string[] NativelySupportedFileTypes =
-    {
-        ".dds", ".ktx", ".pvr"
-    };
-
-    public static Texture2D GetTexture2DFromFile(string filename, TextureFlags textureFlags)
-    {
-        if (!ResourceIndex.TryGetTexturePath(filename, out var path))
-            return GetDefaultTexture2D();
-
         var extension = Path.GetExtension(path);
 
-        if (NativelySupportedFileTypes.Contains(extension) && 
+        if (SupportedTextureFileTypes.NativelySupportedFileTypes.Contains(extension) &&
             TryGetNativeTextureFile(path, textureFlags, out var textureHandle, out var textureInfo))
             return new Texture2D(textureHandle, textureInfo, textureFlags);
 
-        if (!StbSupportedFileTypes.Contains(extension)) 
+        if (!SupportedTextureFileTypes.StbSupportedFileTypes.Contains(extension))
             // TODO: log extension not supported
             return GetDefaultTexture2D();
-        
+
         if (!TryGetStbTextureFile(path, out var imageResult, out var bitsPerChannel))
             return GetDefaultTexture2D();
 
@@ -43,34 +30,28 @@ public static unsafe class TextureUtils
             false, textureFormat, textureFlags);
     }
 
-    public static Texture3D GetTexture3DFromFile(string filename, TextureFlags textureFlags)
+    public static Texture3D GetTexture3DFromFile(string path, TextureFlags textureFlags)
     {
-        if (!ResourceIndex.TryGetTexturePath(filename, out var path))
-            return GetDefaultTexture3D();
-
         var extension = Path.GetExtension(path);
 
-        if (NativelySupportedFileTypes.Contains(extension) && 
+        if (SupportedTextureFileTypes.NativelySupportedFileTypes.Contains(extension) &&
             TryGetNativeTextureFile(path, textureFlags, out var textureHandle, out var textureInfo))
             return new Texture3D(textureHandle, textureInfo, textureFlags);
 
         return GetDefaultTexture3D();
     }
 
-    public static TextureCube GetTextureCubeFromFile(string filename, TextureFlags textureFlags)
+    public static TextureCube GetTextureCubeFromFile(string path, TextureFlags textureFlags)
     {
-        if (!ResourceIndex.TryGetTexturePath(filename, out var path))
-            return GetDefaultTextureCube();
-
         var extension = Path.GetExtension(path);
 
-        if (NativelySupportedFileTypes.Contains(extension) && 
+        if (SupportedTextureFileTypes.NativelySupportedFileTypes.Contains(extension) &&
             TryGetNativeTextureFile(path, textureFlags, out var textureHandle, out var textureInfo))
             return new TextureCube(textureHandle, textureInfo, textureFlags);
 
-        if (!StbSupportedFileTypes.Contains(extension)) 
+        if (!SupportedTextureFileTypes.StbSupportedFileTypes.Contains(extension))
             return GetDefaultTextureCube();
-        
+
         if (!TryGetStbTextureFile(path, out var imageResult, out var bitsPerChannel))
             return GetDefaultTextureCube();
 
@@ -110,7 +91,7 @@ public static unsafe class TextureUtils
 
         if (!FileUtils.TryOpenReadFile(filepath, out var stream))
             return false;
-        
+
         var imageInfoBool = ImageInfo.FromStream(stream);
 
         if (!imageInfoBool.HasValue)
@@ -140,7 +121,7 @@ public static unsafe class TextureUtils
             _ => TextureFormat.Unknown
         };
     }
-    
+
     public static Texture2D GetDefaultTexture2D()
     {
         throw new NotImplementedException();

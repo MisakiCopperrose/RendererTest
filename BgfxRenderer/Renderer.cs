@@ -1,14 +1,9 @@
 using Bgfx;
-using BgfxRenderer.Enums;
 
 namespace BgfxRenderer;
 
 public static class Renderer
 {
-    public static SupportedApis CurrentBackend { get; private set; } = SupportedApis.NotSupported;
-
-    public static ConfigData CurrentConfigData { get; private set; } = new();
-    
     public static void Initialize(TaskFactory taskFactory)
     {
         // TODO: load config file
