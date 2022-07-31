@@ -1,6 +1,6 @@
 using System.Drawing;
 
-namespace Renderer.Utils;
+namespace BgfxRenderer.Utils;
 
 public static class ColorUtils
 {

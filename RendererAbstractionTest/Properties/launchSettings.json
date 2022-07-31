@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "RendererAbstractionTest": {
-      "commandName": "Project",
-      "nativeDebugging": true
-    }
-  }
-}
