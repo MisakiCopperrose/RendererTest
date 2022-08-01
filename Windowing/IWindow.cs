@@ -1,16 +1,8 @@
 namespace Windowing;
 
-public unsafe interface IWindow
+public interface IWindow
 {
-    int Width { get; }
-
-    int Height { get; }
-
-    bool WindowShouldClose { get; }
-
-    void PollEvents();
-
-    void* NativeWindowHandle(out void* display);
+    public int Width { get; set; }
     
-    void* NativeWindowHandle();
+    public int Height { get; set; }
 }

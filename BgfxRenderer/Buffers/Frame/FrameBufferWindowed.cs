@@ -9,13 +9,13 @@ public unsafe class FrameBufferWindowed : IFrameBuffer
 
     public FrameBufferWindowed(IWindow window)
     {
-        Handle = bgfx.create_frame_buffer_from_nwh(
-            window.NativeWindowHandle(),
-            (ushort)window.Width,
-            (ushort)window.Height,
-            bgfx.TextureFormat.Count,
-            bgfx.TextureFormat.Count
-        );
+        // Handle = bgfx.create_frame_buffer_from_nwh(
+        //     Window.GetNativeWindowPointer(window),
+        //     (ushort)window.Width,
+        //     (ushort)window.Height,
+        //     bgfx.TextureFormat.Count,
+        //     bgfx.TextureFormat.Count
+        // );
 
         CurrentParent = window;
     }

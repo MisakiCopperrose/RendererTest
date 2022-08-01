@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BgfxRenderer", "BgfxRendere
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maths", "Maths\Maths.csproj", "{F1C7C3A4-8052-474A-8C73-C3B59BDEFA4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bgfx.NET", "Bgfx.NET\Bgfx.NET.csproj", "{9ED62E60-9265-4000-981F-649F4DDE990E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F1C7C3A4-8052-474A-8C73-C3B59BDEFA4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1C7C3A4-8052-474A-8C73-C3B59BDEFA4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1C7C3A4-8052-474A-8C73-C3B59BDEFA4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ED62E60-9265-4000-981F-649F4DDE990E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ED62E60-9265-4000-981F-649F4DDE990E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ED62E60-9265-4000-981F-649F4DDE990E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ED62E60-9265-4000-981F-649F4DDE990E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
